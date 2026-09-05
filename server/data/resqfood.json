@@ -392,7 +392,7 @@
       "rescuePrice": 25,
       "discountPercent": 79,
       "portionsTotal": 6,
-      "portionsLeft": 3,
+      "portionsLeft": 2,
       "limitPerBuyer": 2,
       "pickupWindow": "19:30 – 21:30 today",
       "pickupStart": "19:30",
@@ -416,7 +416,7 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T23:33:51.585Z"
     },
     {
       "id": "rq-in-09",
@@ -595,6 +595,40 @@
   ],
   "orders": [
     {
+      "id": "ord-231585",
+      "rescueId": "rq-in-08",
+      "title": "Ghar Ka Khana: Gujarati Kathiyawadi Khichdi & Kadhi",
+      "foodItem": "Ghar Ka Khana: Gujarati Kathiyawadi Khichdi & Kadhi",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Sunita's Home Kitchen",
+      "seller": "Sunita's Home Kitchen",
+      "buyerId": "usr-5545",
+      "buyerName": "U633445",
+      "portions": 1,
+      "totalAmount": 25,
+      "amountPaid": 25,
+      "savings": 95,
+      "otp": "2694",
+      "qrData": "RESQ-ord-231585-2694-Sunita'sHomeKitchen",
+      "pickupWindow": "19:30 – 21:30 today",
+      "pickupStart": "19:30",
+      "pickupEnd": "21:30",
+      "status": "Ready for Pickup",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Razorpay (Online UPI/Card)",
+      "razorpayOrderId": "order_demo_1788651225220",
+      "razorpayPaymentId": "pay_demo_51231572",
+      "razorpaySignature": "sig_demo_1788651231572",
+      "address": "Pali Village, Bandra West, Mumbai 400050",
+      "pickupLocation": "Pali Village, Bandra West, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.06,
+        "lng": 72.829
+      },
+      "image": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+      "createdAt": "2026-09-05T23:33:51.586Z"
+    },
+    {
       "id": "ord-899034",
       "rescueId": "rq-in-01",
       "title": "North Indian Deluxe Thali (Paneer Makhani & Dal Tadka)",
@@ -705,6 +739,28 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1788651231588-818",
+      "userId": "usr-seller-demo",
+      "title": "New Order: 1x Ghar Ka Khana: Gujarati Kathiyawadi Khichdi & Kadhi",
+      "message": "U633445 reserved 1 portion(s). Buyer OTP: 2694.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T23:33:51.588Z"
+    },
+    {
+      "id": "notif-1788651231586-443",
+      "userId": "usr-5545",
+      "title": "Order Confirmed: Ghar Ka Khana: Gujarati Kathiyawadi Khichdi & Kadhi",
+      "message": "Your pickup pass with OTP 2694 is ready. Pickup window: 19:30 – 21:30 today.",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-231585",
+      "createdAt": "2026-09-05T23:33:51.586Z"
+    },
     {
       "id": "notif-1788650899035-998",
       "userId": "usr-seller-demo",

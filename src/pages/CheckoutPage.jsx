@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
 import { loadRazorpayScript } from '../utils/razorpay';
+import RazorpayDummyGateway from '../components/payment/RazorpayDummyGateway';
 import {
   ArrowLeft,
   ShieldCheck,
@@ -214,16 +215,16 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
     }
   };
 
-  // Complete Sandbox Verification for Hackathon Testing
-  const handleCompleteSandboxPayment = async () => {
+  // Complete Dummy/Sandbox Verification for Hackathon Testing
+  const handleCompleteSandboxPayment = async (dummyResponse) => {
     setShowSandboxModal(false);
     setIsProcessing(true);
     setPaymentState({ status: 'idle', message: 'Verifying payment signature with backend...' });
 
     try {
-      const demoOrderId = pendingRazorpayData?.orderId || `order_demo_${Date.now()}`;
-      const demoPaymentId = `pay_demo_${Date.now().toString().slice(-8)}`;
-      const demoSignature = `sig_demo_${Date.now()}`;
+      const demoOrderId = dummyResponse?.razorpay_order_id || pendingRazorpayData?.orderId || `order_demo_${Date.now()}`;
+      const demoPaymentId = dummyResponse?.razorpay_payment_id || `pay_demo_${Date.now().toString().slice(-8)}`;
+      const demoSignature = dummyResponse?.razorpay_signature || `sig_demo_${Date.now()}`;
 
       // Call the backend verification API
       const confirmedOrder = await verifyRazorpayPayment({
@@ -232,7 +233,7 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
         razorpay_signature: demoSignature,
         rescueId: rescue.id,
         portions,
-        paymentMethod: 'Razorpay Sandbox (Verified)'
+        paymentMethod: 'Razorpay (Online UPI/Card)'
       });
 
       confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
@@ -249,12 +250,12 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
   };
 
   // Simulate Payment Failure for Demo
-  const handleSimulatePaymentFailure = () => {
+  const handleSimulatePaymentFailure = (customReason) => {
     setShowSandboxModal(false);
     setIsProcessing(false);
     setPaymentState({
       status: 'failed',
-      message: 'Payment failed: Bank server timed out or insufficient funds. (Simulated test failure)'
+      message: customReason || 'Payment failed: Bank server timed out or insufficient funds. (Simulated test failure)'
     });
     addToast('Simulated payment failure triggered for testing', 'error');
   };
@@ -624,79 +625,19 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
         </div>
       </div>
 
-      {/* Interactive Razorpay Test Simulator Modal (For Demo / Hackathon evaluation) */}
-      {showSandboxModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5 animate-scale-up">
-            
-            {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm">
-                  R
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-slate-900 text-sm">Razorpay Checkout Sandbox</h3>
-                  <span className="text-[10px] text-slate-400 font-mono">Test Gateway Mode</span>
-                </div>
-              </div>
-              <span className="text-xs font-black text-slate-900 bg-slate-100 px-2 py-1 rounded-lg">
-                ₹{rescuePriceTotal}
-              </span>
-            </div>
-
-            <div className="space-y-2 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-              <div className="flex justify-between">
-                <span className="text-slate-400">Order ID:</span>
-                <span className="font-mono text-slate-800 font-bold">{pendingRazorpayData?.orderId || 'order_demo_123'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Item:</span>
-                <span className="font-semibold text-slate-800">{rescue.title} ({portions}x)</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Store:</span>
-                <span className="font-semibold text-slate-800">{rescue.seller}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Security:</span>
-                <span className="text-emerald-700 font-bold">HMAC SHA256 Signature Verification</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Test all payment states required by the hackathon criteria:
-            </p>
-
-            {/* Test State Triggers */}
-            <div className="space-y-2.5">
-              <button
-                onClick={handleCompleteSandboxPayment}
-                className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2"
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                <span>Simulate Successful Payment (Verify Signature)</span>
-              </button>
-
-              <button
-                onClick={handleSimulatePaymentFailure}
-                className="w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-all flex items-center justify-center gap-2"
-              >
-                <AlertCircle className="w-4 h-4" />
-                <span>Simulate Payment Failure (Declined)</span>
-              </button>
-
-              <button
-                onClick={handleSimulatePaymentCancelled}
-                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-2"
-              >
-                <AlertTriangle className="w-4 h-4" />
-                <span>Cancel / Dismiss Checkout</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* High-Fidelity Razorpay Dummy Gateway Modal */}
+      <RazorpayDummyGateway
+        isOpen={showSandboxModal}
+        onClose={() => setShowSandboxModal(false)}
+        orderData={pendingRazorpayData}
+        totalAmount={rescuePriceTotal}
+        foodTitle={rescue.title}
+        sellerName={rescue.seller}
+        buyerInfo={{ name: currentUser?.name || 'Rahul Sharma', email: currentUser?.email || 'rahul@example.com' }}
+        onSuccess={handleCompleteSandboxPayment}
+        onFailure={handleSimulatePaymentFailure}
+        onCancel={handleSimulatePaymentCancelled}
+      />
     </div>
   );
 }

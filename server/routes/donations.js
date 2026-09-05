@@ -30,10 +30,15 @@ router.post('/claim', (req, res) => {
       vehicleId
     });
 
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics(updatedListing?.sellerId || 'usr-seller-demo');
+
     // Broadcast claim in real-time
     realtime.broadcast('DONATION_CLAIMED', {
       claim,
-      updatedListing
+      updatedListing,
+      impact,
+      sellerStats
     });
 
     res.status(201).json({ claim, updatedListing });

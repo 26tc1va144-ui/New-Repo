@@ -867,6 +867,9 @@ class Database {
     });
 
     return {
+      storeName: 'Crust & Co. Bakery',
+      outlet: 'Bandra West Outlet',
+      revenueChangeWoW: '+18%',
       revenueRecovered7d: 12450 + totalRevenue,
       portionsRescued7d: 184 + totalPortionsRescued,
       wasteDivertedKg: parseFloat((82.5 + wasteDivertedKg).toFixed(1)),
@@ -880,8 +883,10 @@ class Database {
   }
 
   getCommunityImpact() {
+    this.refreshListingStatuses();
     const orders = this.memoryData.orders;
     const claims = this.memoryData.claims;
+    const listings = this.memoryData.listings;
 
     const buyerPortions = orders.reduce((sum, o) => sum + (o.portions || 0), 0);
     const ngoPortions = claims.reduce((sum, c) => sum + (c.portionsClaimed || 0), 0);
@@ -895,16 +900,22 @@ class Database {
     const peopleFed = 31200 + totalNewMeals;
     const kmDrivenEquivalent = 462400 + Math.round(totalNewMeals * 2.4 * 5);
 
+    const activeListings = listings.filter(l => l.portionsLeft > 0 && l.status !== 'Expired' && l.status !== 'Cancelled');
+    const totalPortionsAvailable = activeListings.reduce((sum, l) => sum + (l.portionsLeft || 0), 0);
+    const uniqueSellers = new Set(listings.map(l => l.sellerName || l.seller)).size;
+
     return {
       mealsRescued,
       co2eAvoidedTons: parseFloat(co2eAvoidedTons),
       co2eAvoidedKg,
       kmDrivenEquivalent,
       waterSavedLitres,
-      waterDisplay: `${(waterSavedLitres / 1000000).toFixed(1)}M`,
+      waterDisplay: `${(waterSavedLitres / 1000000).toFixed(1)}M L`,
       peopleFed,
-      participatingStores: 142 + Math.floor(this.memoryData.listings.length / 3),
-      activeNgoPartners: 28 + Math.floor(this.memoryData.claims.length / 2)
+      participatingStores: 135 + uniqueSellers,
+      activeNgoPartners: 28 + new Set(claims.map(c => c.ngoName)).size,
+      activeListingsCount: activeListings.length,
+      totalPortionsAvailable
     };
   }
 

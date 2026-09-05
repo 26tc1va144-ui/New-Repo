@@ -55,9 +55,15 @@ router.post('/', (req, res) => {
     }
 
     const listing = db.createListing(req.body);
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics(listing.sellerId);
 
     // Broadcast in real-time to all connected buyers, sellers, NGOs
-    realtime.broadcast('LISTING_CREATED', { listing });
+    realtime.broadcast('LISTING_CREATED', {
+      listing,
+      impact,
+      sellerStats
+    });
 
     res.status(201).json(listing);
   } catch (err) {
@@ -73,8 +79,15 @@ router.put('/:id', (req, res) => {
       return res.status(404).json({ error: 'Listing not found' });
     }
 
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics(updated.sellerId);
+
     // Broadcast update
-    realtime.broadcast('LISTING_UPDATED', { listing: updated });
+    realtime.broadcast('LISTING_UPDATED', {
+      listing: updated,
+      impact,
+      sellerStats
+    });
 
     res.json(updated);
   } catch (err) {
@@ -90,8 +103,15 @@ router.delete('/:id', (req, res) => {
       return res.status(404).json({ error: 'Listing not found' });
     }
 
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics('usr-seller-demo');
+
     // Broadcast cancellation
-    realtime.broadcast('LISTING_CANCELLED', { id: req.params.id });
+    realtime.broadcast('LISTING_CANCELLED', {
+      id: req.params.id,
+      impact,
+      sellerStats
+    });
 
     res.json({ success: true, message: 'Listing cancelled' });
   } catch (err) {

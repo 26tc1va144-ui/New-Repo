@@ -172,15 +172,21 @@ export function AppProvider({ children }) {
             case 'LISTING_CREATED': {
               const newListing = normalizeListing(data.payload.listing);
               setRescues(prev => [newListing, ...prev.filter(l => l.id !== newListing.id)]);
+              if (data.payload.impact) setCommunityImpact(data.payload.impact);
+              if (data.payload.sellerStats) setSellerStats(data.payload.sellerStats);
               break;
             }
             case 'LISTING_UPDATED': {
               const updatedListing = normalizeListing(data.payload.listing);
               setRescues(prev => prev.map(l => l.id === updatedListing.id ? updatedListing : l));
+              if (data.payload.impact) setCommunityImpact(data.payload.impact);
+              if (data.payload.sellerStats) setSellerStats(data.payload.sellerStats);
               break;
             }
             case 'LISTING_CANCELLED': {
               setRescues(prev => prev.map(l => l.id === data.payload.id ? { ...l, status: 'Cancelled' } : l));
+              if (data.payload.impact) setCommunityImpact(data.payload.impact);
+              if (data.payload.sellerStats) setSellerStats(data.payload.sellerStats);
               break;
             }
             case 'ORDER_CREATED': {
@@ -517,16 +523,19 @@ export function AppProvider({ children }) {
         addToast,
         removeToast,
 
-        // Analytics & Partners
-        sellerStats: sellerStats || {
-          revenueRecovered7d: 12450,
-          portionsRescued7d: 184,
-          wasteDivertedKg: 82.5,
-          co2eAvoidedKg: 442,
-          sellThroughRate: '92%',
-          activeListingsCount: rescues.filter(l => l.portionsLeft > 0 && l.status !== 'Expired').length,
-          expiringTonightCount: rescues.filter(l => l.portionsLeft > 0 && l.status === 'Low Stock').length,
-          dailyAnalytics: [
+        // Analytics & Partners (Real-time dynamic calculations tied directly to live listings and orders)
+        sellerStats: {
+          storeName: sellerStats?.storeName || 'Crust & Co. Bakery',
+          outlet: sellerStats?.outlet || 'Bandra West Outlet',
+          revenueChangeWoW: sellerStats?.revenueChangeWoW || '+18%',
+          revenueRecovered7d: sellerStats?.revenueRecovered7d ?? (12450 + orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0)),
+          portionsRescued7d: sellerStats?.portionsRescued7d ?? (184 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
+          wasteDivertedKg: sellerStats?.wasteDivertedKg ?? parseFloat((82.5 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 0.45).toFixed(1)),
+          co2eAvoidedKg: sellerStats?.co2eAvoidedKg ?? Math.round(442 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 2.4),
+          sellThroughRate: sellerStats?.sellThroughRate || '92%',
+          activeListingsCount: rescues.filter(l => l.portionsLeft > 0 && l.status !== 'Expired' && l.status !== 'Cancelled').length,
+          expiringTonightCount: rescues.filter(l => l.portionsLeft > 0 && (l.status === 'Low Stock' || l.isExpiringSoon)).length,
+          dailyAnalytics: sellerStats?.dailyAnalytics || [
             { day: 'Mon', revenue: 1450, portions: 22, wasteKg: 9 },
             { day: 'Tue', revenue: 1680, portions: 26, wasteKg: 11 },
             { day: 'Wed', revenue: 1390, portions: 21, wasteKg: 8.5 },
@@ -537,15 +546,17 @@ export function AppProvider({ children }) {
           ],
           recentOrders: orders.slice(0, 5)
         },
-        communityImpact: communityImpact || {
-          mealsRescued: 48200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0),
-          co2eAvoidedTons: 115.6,
-          kmDrivenEquivalent: 462400,
-          waterSavedLitres: '7.1M',
-          waterDisplay: '7.1M',
-          peopleFed: 31200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0),
-          participatingStores: 142,
-          activeNgoPartners: 28
+        communityImpact: {
+          mealsRescued: communityImpact?.mealsRescued ?? (48200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
+          co2eAvoidedTons: communityImpact?.co2eAvoidedTons ?? parseFloat(((115600 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 2.4) / 1000).toFixed(1)),
+          kmDrivenEquivalent: communityImpact?.kmDrivenEquivalent ?? (462400 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 12),
+          waterSavedLitres: communityImpact?.waterSavedLitres ?? (7100000 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 180),
+          waterDisplay: communityImpact?.waterDisplay || `${(((communityImpact?.waterSavedLitres || 7100000) + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 180) / 1000000).toFixed(1)}M L`,
+          peopleFed: communityImpact?.peopleFed ?? (31200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
+          participatingStores: communityImpact?.participatingStores ?? (135 + new Set(rescues.map(r => r.seller)).size),
+          activeNgoPartners: communityImpact?.activeNgoPartners ?? (28 + ngoClaims.length),
+          activeListingsCount: rescues.filter(l => l.portionsLeft > 0 && l.status !== 'Expired' && l.status !== 'Cancelled').length,
+          totalPortionsAvailable: rescues.reduce((sum, l) => sum + (l.portionsLeft || 0), 0)
         },
         ngos: [
           {

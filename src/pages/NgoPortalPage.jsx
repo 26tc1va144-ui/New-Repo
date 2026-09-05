@@ -44,6 +44,13 @@ export default function NgoPortalPage({ onNavigate }) {
     }
   };
 
+  // Dynamically calculate operational metrics
+  const totalMealsServedToday = (ngos || []).reduce((sum, n) => sum + (n.mealsServedToday || 0), 0) +
+    (ngoClaims || []).reduce((sum, c) => sum + (c.portionsClaimed || 0), 0);
+  const totalVehiclesAvailable = (ngos || []).reduce((sum, n) => sum + (n.vehicles || 0), 0);
+  const totalVolunteersOnShift = (ngos || []).reduce((sum, n) => sum + (n.volunteers || 0), 0);
+  const activeUnclaimedCount = unclaimedItems.length;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       
@@ -71,27 +78,35 @@ export default function NgoPortalPage({ onNavigate }) {
       {/* 4 Operations Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-1">
-          <div className="text-3xl font-black text-slate-900 font-display">1,290</div>
+          <div className="text-3xl font-black text-slate-900 font-display">
+            {totalMealsServedToday.toLocaleString()}
+          </div>
           <div className="text-xs font-bold text-slate-700">Meals served today</div>
-          <div className="text-[11px] text-slate-400">Across 8 distribution centres</div>
+          <div className="text-[11px] text-slate-400">Across {(ngos || []).length} active distribution centres</div>
         </div>
 
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-1">
-          <div className="text-3xl font-black text-slate-900 font-display">9</div>
+          <div className="text-3xl font-black text-slate-900 font-display">
+            {totalVehiclesAvailable}
+          </div>
           <div className="text-xs font-bold text-slate-700">Vehicles available</div>
           <div className="text-[11px] text-slate-400">Equipped with thermal carriers</div>
         </div>
 
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-1">
-          <div className="text-3xl font-black text-slate-900 font-display">24</div>
+          <div className="text-3xl font-black text-slate-900 font-display">
+            {totalVolunteersOnShift}
+          </div>
           <div className="text-xs font-bold text-slate-700">Volunteers on shift</div>
           <div className="text-[11px] text-slate-400">Active in Bandra & Western suburbs</div>
         </div>
 
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-1">
-          <div className="text-3xl font-black text-emerald-700 font-display">38 min</div>
-          <div className="text-xs font-bold text-slate-700">Avg. collection time</div>
-          <div className="text-[11px] text-slate-400">From alert to verified pickup</div>
+          <div className="text-3xl font-black text-emerald-700 font-display">
+            {activeUnclaimedCount}
+          </div>
+          <div className="text-xs font-bold text-slate-700">Urgent surplus alerts</div>
+          <div className="text-[11px] text-slate-400">Ready for priority NGO rescue</div>
         </div>
       </div>
 

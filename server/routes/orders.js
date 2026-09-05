@@ -21,10 +21,15 @@ router.post('/', (req, res) => {
       paymentMethod
     });
 
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics(updatedListing?.sellerId || 'usr-seller-demo');
+
     // Broadcast in real-time to all clients
     realtime.broadcast('ORDER_CREATED', {
       order,
-      updatedListing
+      updatedListing,
+      impact,
+      sellerStats
     });
 
     res.status(201).json({ order, updatedListing });
@@ -81,9 +86,14 @@ router.post('/verify-otp', (req, res) => {
       return res.status(400).json(result);
     }
 
+    const impact = db.getCommunityImpact();
+    const sellerStats = db.getSellerAnalytics(result.order?.sellerId || 'usr-seller-demo');
+
     // Broadcast handover completed
     realtime.broadcast('ORDER_COMPLETED', {
-      order: result.order
+      order: result.order,
+      impact,
+      sellerStats
     });
 
     res.json(result);

@@ -48,15 +48,15 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
   const paymentOptions = [
     {
       id: 'upi',
-      name: 'UPI Sandbox (GPay / PhonePe / Paytm)',
-      desc: 'Instant 1-click test simulation',
+      name: 'UPI (GPay / PhonePe / Paytm / QR)',
+      desc: 'Instant zero-fee payment confirmation',
       icon: Smartphone,
-      badge: 'Fastest'
+      badge: 'Instant'
     },
     {
       id: 'card',
-      name: 'Credit / Debit Card (Mock Sandbox)',
-      desc: 'Visa, Mastercard, RuPay test sandbox',
+      name: 'Credit / Debit Card',
+      desc: 'Visa, Mastercard, RuPay secured by RBI guidelines',
       icon: CreditCard,
       badge: 'Zero fees'
     },

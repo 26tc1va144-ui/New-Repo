@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext';
 export default function SellerAnalyticsPage({ onNavigate }) {
   const { sellerStats } = useApp();
 
-  const weeklyData = [
+  const weeklyData = sellerStats?.dailyAnalytics || [
     { day: 'Mon', revenue: 1450, portions: 22, wasteKg: 9 },
     { day: 'Tue', revenue: 1680, portions: 26, wasteKg: 11 },
     { day: 'Wed', revenue: 1390, portions: 21, wasteKg: 8.5 },
@@ -15,7 +15,8 @@ export default function SellerAnalyticsPage({ onNavigate }) {
     { day: 'Sun', revenue: 1240, portions: 19, wasteKg: 7 },
   ];
 
-  const maxRevenue = Math.max(...weeklyData.map(d => d.revenue));
+  const maxRevenue = Math.max(...weeklyData.map(d => d.revenue), 1);
+  const avgDaily = Math.round(weeklyData.reduce((sum, d) => sum + d.revenue, 0) / (weeklyData.length || 1));
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -98,7 +99,7 @@ export default function SellerAnalyticsPage({ onNavigate }) {
             </p>
           </div>
           <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
-            Average: ₹1,722 / day
+            Average: ₹{avgDaily.toLocaleString()} / day
           </span>
         </div>
 

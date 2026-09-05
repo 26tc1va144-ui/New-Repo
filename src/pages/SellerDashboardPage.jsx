@@ -18,6 +18,7 @@ import {
 
 export default function SellerDashboardPage({ onNavigate }) {
   const {
+    currentUser,
     rescues,
     addRescueListing,
     escalateListingToNgo,
@@ -103,8 +104,13 @@ export default function SellerDashboardPage({ onNavigate }) {
     setOtpVerifyResult(res);
   };
 
-  // Filter listings for this store
-  const sellerListings = rescues.filter(r => r.seller.includes('Crust & Co') || r.category === 'Bakery');
+  // Filter listings for this store (includes any listing created by this seller)
+  const sellerListings = rescues.filter(r =>
+    (currentUser?.id && r.sellerId === currentUser.id) ||
+    (currentUser?.name && (r.seller?.includes(currentUser.name) || r.sellerName?.includes(currentUser.name))) ||
+    r.seller?.includes('Crust & Co') ||
+    r.sellerName?.includes('Crust & Co')
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

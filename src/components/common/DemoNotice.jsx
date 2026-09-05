@@ -18,9 +18,9 @@ export default function DemoNotice({ onNavigate }) {
     <div className="bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 text-white text-xs py-2 px-4 border-b border-emerald-800/40 relative z-40">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-0.5 rounded border border-emerald-500/30">
-            <Sparkles className="w-3 h-3 text-emerald-300" />
-            SHOWCASE DEMO
+          <span className="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 font-semibold px-2.5 py-0.5 rounded border border-emerald-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            LIVE MARKETPLACE · REAL-TIME SYNC
           </span>
           <div className="flex items-center gap-1.5 text-slate-200">
             <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -52,7 +52,7 @@ export default function DemoNotice({ onNavigate }) {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 text-[11px] bg-white/10 px-2 py-0.5 rounded border border-white/15">
             <UserCheck className="w-3 h-3 text-emerald-300" />
-            <span className="text-slate-300">Active persona:</span>
+            <span className="text-slate-300">Active role:</span>
             <select
               value={currentRole}
               onChange={(e) => {

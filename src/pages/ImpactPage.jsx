@@ -91,7 +91,7 @@ export default function ImpactPage({ onNavigate }) {
             💧
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact.waterSavedLitres}
+            {communityImpact.waterDisplay || `${(communityImpact.waterSavedLitres / 1000000).toFixed(1)}M L`}
           </div>
           <div className="text-sm font-bold text-slate-800">
             Water saved

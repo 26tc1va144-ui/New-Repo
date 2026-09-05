@@ -198,18 +198,18 @@ export default function HomePage({ onNavigate, onSelectRescue }) {
       </section>
 
       {/* Nearby Food Interactive Map Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="nearby-food" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">
               <MapPin className="w-3.5 h-3.5" />
-              <span>Nearby Food Radar</span>
+              <span>Interactive Geo-Radar</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
-              Explore surplus food on the live map
+              Nearby Food
             </h2>
             <p className="text-slate-600 text-sm mt-1">
-              Tap any food marker to inspect portions, rescue price, pickup address, and directions.
+              Explore available surplus food pickup points on OpenStreetMap. Tap any marker to view quantity, rescue price, and directions.
             </p>
           </div>
 

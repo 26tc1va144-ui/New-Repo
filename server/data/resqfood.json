@@ -220,14 +220,14 @@
       "rescuePrice": 59,
       "discountPercent": 75,
       "portionsTotal": 8,
-      "portionsLeft": 4,
+      "portionsLeft": 3,
       "limitPerBuyer": 2,
       "pickupWindow": "19:30 – 22:30 today",
       "pickupStart": "19:30",
       "pickupEnd": "22:30",
       "freshnessCutoff": "Best consumed hot within 3 hours",
       "holdTemperature": "Sealed handi kept on steam dum holding (> 65°C)",
-      "status": "Available",
+      "status": "Low Stock",
       "isDonation": false,
       "category": "Restaurant",
       "diningType": "Biryani & Rice",
@@ -243,7 +243,7 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:51:21.749Z"
+      "updatedAt": "2026-09-05T23:39:15.456Z"
     },
     {
       "id": "rq-in-05",
@@ -595,6 +595,41 @@
   ],
   "orders": [
     {
+      "id": "ord-555456",
+      "rescueId": "rq-in-04",
+      "title": "Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "foodItem": "Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Dawat-e-Khaas Biryani",
+      "seller": "Dawat-e-Khaas Biryani",
+      "buyerId": "usr-5545",
+      "buyerName": "U633445",
+      "portions": 1,
+      "totalAmount": 59,
+      "amountPaid": 59,
+      "savings": 181,
+      "otp": "1967",
+      "qrData": "RESQ-ord-555456-1967-Dawat-e-KhaasBiryani",
+      "pickupWindow": "19:30 – 22:30 today",
+      "pickupStart": "19:30",
+      "pickupEnd": "22:30",
+      "status": "Picked Up",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Razorpay (Online UPI/Card)",
+      "razorpayOrderId": "order_demo_1788651515394",
+      "razorpayPaymentId": "pay_dummy_51555446",
+      "razorpaySignature": "sig_demo_1788651555446",
+      "address": "Waterfield Road, Bandra West, Mumbai 400050",
+      "pickupLocation": "Waterfield Road, Bandra West, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.057,
+        "lng": 72.832
+      },
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+      "createdAt": "2026-09-05T23:39:15.456Z",
+      "completedAt": "2026-09-05T23:39:32.172Z"
+    },
+    {
       "id": "ord-231585",
       "rescueId": "rq-in-08",
       "title": "Ghar Ka Khana: Gujarati Kathiyawadi Khichdi & Kadhi",
@@ -739,6 +774,50 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1788651572174-497",
+      "userId": "usr-seller-demo",
+      "title": "Handover Confirmed: Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "Successfully verified OTP 1967. Revenue recorded.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T23:39:32.174Z"
+    },
+    {
+      "id": "notif-1788651572172-776",
+      "userId": "usr-5545",
+      "title": "Handover Complete: Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "Your food pickup was verified by Dawat-e-Khaas Biryani. Enjoy your meal!",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-555456",
+      "createdAt": "2026-09-05T23:39:32.172Z"
+    },
+    {
+      "id": "notif-1788651555459-189",
+      "userId": "usr-seller-demo",
+      "title": "New Order: 1x Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "U633445 reserved 1 portion(s). Buyer OTP: 1967.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T23:39:15.459Z"
+    },
+    {
+      "id": "notif-1788651555456-527",
+      "userId": "usr-5545",
+      "title": "Order Confirmed: Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "Your pickup pass with OTP 1967 is ready. Pickup window: 19:30 – 22:30 today.",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-555456",
+      "createdAt": "2026-09-05T23:39:15.456Z"
+    },
     {
       "id": "notif-1788651231588-818",
       "userId": "usr-seller-demo",

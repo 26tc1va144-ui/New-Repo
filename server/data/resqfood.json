@@ -1,0 +1,353 @@
+{
+  "users": [
+    {
+      "id": "usr-buyer-demo",
+      "name": "Rahul Sharma",
+      "email": "rahul.s@resqfood.org",
+      "phone": "+91 98201 44321",
+      "role": "buyer",
+      "avatar": "RS",
+      "address": "Bandra West, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.0596,
+        "lng": 72.8295
+      },
+      "createdAt": "2026-08-15T10:00:00.000Z"
+    },
+    {
+      "id": "usr-seller-demo",
+      "name": "Crust & Co. Bakery",
+      "email": "manager@crustandco.com",
+      "phone": "+91 98209 88123",
+      "role": "seller",
+      "avatar": "CC",
+      "sellerType": "Bakery",
+      "address": "Shop 4, Hill Road, Bandra West, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.0596,
+        "lng": 72.835
+      },
+      "fssaiLicense": "FSSAI #11521008000452",
+      "rating": 4.8,
+      "reviewsCount": 142,
+      "createdAt": "2026-07-10T08:30:00.000Z"
+    },
+    {
+      "id": "usr-ngo-demo",
+      "name": "Roti Bank Mumbai",
+      "email": "dispatch@rotibank.org",
+      "phone": "+91 98334 11220",
+      "role": "ngo",
+      "avatar": "RB",
+      "address": "Mumbai Central Relief Hub, Mumbai 400008",
+      "coordinates": {
+        "lat": 18.9696,
+        "lng": 72.8193
+      },
+      "fleetCount": 8,
+      "createdAt": "2026-06-01T09:00:00.000Z"
+    },
+    {
+      "id": "usr-admin-demo",
+      "name": "ResQFood Administrator",
+      "email": "admin@resqfood.org",
+      "phone": "+91 99999 00000",
+      "role": "admin",
+      "avatar": "AD",
+      "address": "Nariman Point, Mumbai 400021",
+      "coordinates": {
+        "lat": 18.9256,
+        "lng": 72.8242
+      },
+      "createdAt": "2026-05-01T00:00:00.000Z"
+    }
+  ],
+  "listings": [
+    {
+      "id": "rq-101",
+      "title": "Artisan Sourdough & Croissant Box",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Crust & Co. Bakery",
+      "sellerType": "Bakery",
+      "rating": 4.8,
+      "reviewsCount": 142,
+      "location": "Bandra West, Mumbai",
+      "address": "Shop 4, Hill Road, Near Bandra Station, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.0596,
+        "lng": 72.835
+      },
+      "originalPrice": 640,
+      "rescuePrice": 149,
+      "discountPercent": 77,
+      "portionsTotal": 8,
+      "portionsLeft": 6,
+      "limitPerBuyer": 3,
+      "pickupWindow": "20:30 – 22:00 today",
+      "pickupStart": "20:30",
+      "pickupEnd": "22:00",
+      "freshnessCutoff": "Best before tomorrow 6 PM",
+      "holdTemperature": "Stored at ambient room temperature in protective bakery paper (< 24°C)",
+      "status": "Available",
+      "isDonation": false,
+      "category": "Bakery",
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
+      "description": "End-of-day sourdough loaves, butter croissants and seasonal danish pastries baked this morning, ready for breakfast.",
+      "allergens": [
+        "Gluten",
+        "Dairy",
+        "Eggs"
+      ],
+      "dietary": [
+        "Vegetarian"
+      ],
+      "fssaiLicense": "FSSAI #11521008000452",
+      "fssaiVerified": true,
+      "ngoEscalated": false,
+      "createdAt": "2026-09-05T17:35:41.570Z",
+      "updatedAt": "2026-09-05T17:35:41.571Z"
+    },
+    {
+      "id": "rq-102",
+      "title": "North Indian Thali Surplus (5 meals)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Spice Route Kitchen",
+      "sellerType": "Restaurant",
+      "rating": 4.6,
+      "reviewsCount": 89,
+      "location": "Khar West, Mumbai",
+      "address": "14th Road, Off Linking Road, Khar West, Mumbai 400052",
+      "coordinates": {
+        "lat": 19.068,
+        "lng": 72.839
+      },
+      "originalPrice": 1250,
+      "rescuePrice": 299,
+      "discountPercent": 76,
+      "portionsTotal": 10,
+      "portionsLeft": 4,
+      "limitPerBuyer": 2,
+      "pickupWindow": "21:00 – 22:30 today",
+      "pickupStart": "21:00",
+      "pickupEnd": "22:30",
+      "freshnessCutoff": "Consume within 3 hours of pickup",
+      "holdTemperature": "Steam holding cabinet at > 65°C maintained continuously",
+      "status": "Available",
+      "isDonation": false,
+      "category": "Restaurant",
+      "image": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80",
+      "description": "Hot, freshly packed executive thalis with Paneer Butter Masala, Dal Makhani, Jeera Rice, and soft Phulkas prepared for evening corporate dinner surplus.",
+      "allergens": [
+        "Dairy"
+      ],
+      "dietary": [
+        "Vegetarian"
+      ],
+      "fssaiLicense": "FSSAI #11522003001890",
+      "fssaiVerified": true,
+      "ngoEscalated": true,
+      "createdAt": "2026-09-05T18:35:41.571Z",
+      "updatedAt": "2026-09-05T18:35:41.571Z"
+    },
+    {
+      "id": "rq-103",
+      "title": "Fresh Organic Produce Rescue Crate",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "GreenLeaf Grocers",
+      "sellerType": "Groceries",
+      "rating": 4.4,
+      "reviewsCount": 64,
+      "location": "Andheri East, Mumbai",
+      "address": "Plot 12, Mahakali Caves Rd, Andheri East, Mumbai 400093",
+      "coordinates": {
+        "lat": 19.1197,
+        "lng": 72.8464
+      },
+      "originalPrice": 900,
+      "rescuePrice": 199,
+      "discountPercent": 78,
+      "portionsTotal": 15,
+      "portionsLeft": 12,
+      "limitPerBuyer": 4,
+      "pickupWindow": "18:00 – 21:00 today",
+      "pickupStart": "18:00",
+      "pickupEnd": "21:00",
+      "freshnessCutoff": "Best consumed within 3–4 days",
+      "holdTemperature": "Cold room maintained between 4°C – 8°C",
+      "status": "Available",
+      "isDonation": false,
+      "category": "Groceries",
+      "image": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&q=80",
+      "description": "Assorted seasonal organic vegetables and fruit surplus including sweet bell peppers, carrots, avocados, and fresh leafy greens sourced from farm morning shipments.",
+      "allergens": [],
+      "dietary": [
+        "Vegan",
+        "Gluten-Free"
+      ],
+      "fssaiLicense": "FSSAI #11520005000781",
+      "fssaiVerified": true,
+      "ngoEscalated": false,
+      "createdAt": "2026-09-05T16:35:41.571Z",
+      "updatedAt": "2026-09-05T16:35:41.571Z"
+    },
+    {
+      "id": "rq-104",
+      "title": "Gourmet Cold Brew & Danish Bundle",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Brew & Bean Specialty Cafe",
+      "sellerType": "Cafe",
+      "rating": 4.9,
+      "reviewsCount": 112,
+      "location": "Bandra West, Mumbai",
+      "address": "Perry Cross Road, Bandra West, Mumbai 400050",
+      "coordinates": {
+        "lat": 19.055,
+        "lng": 72.828
+      },
+      "originalPrice": 580,
+      "rescuePrice": 120,
+      "discountPercent": 79,
+      "portionsTotal": 6,
+      "portionsLeft": 2,
+      "limitPerBuyer": 2,
+      "pickupWindow": "19:00 – 20:30 today",
+      "pickupStart": "19:00",
+      "pickupEnd": "20:30",
+      "freshnessCutoff": "Bottled fresh today, keep chilled",
+      "holdTemperature": "Display chiller at 3°C",
+      "status": "Low Stock",
+      "isDonation": false,
+      "category": "Cafe",
+      "image": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=800&q=80",
+      "description": "Single-origin Ethiopian cold brew bottles paired with freshly rolled cinnamon buns from morning roast batches.",
+      "allergens": [
+        "Gluten",
+        "Dairy"
+      ],
+      "dietary": [
+        "Vegetarian"
+      ],
+      "fssaiLicense": "FSSAI #11523002000311",
+      "fssaiVerified": true,
+      "ngoEscalated": false,
+      "createdAt": "2026-09-05T15:35:41.571Z",
+      "updatedAt": "2026-09-05T15:35:41.571Z"
+    },
+    {
+      "id": "rq-105",
+      "title": "Buffet Excess: Paneer Tikka & Biryani",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Grand Banquet Catering",
+      "sellerType": "Catering",
+      "rating": 4.7,
+      "reviewsCount": 97,
+      "location": "Santacruz West, Mumbai",
+      "address": "S.V. Road, Near Milan Subway, Santacruz West, Mumbai 400054",
+      "coordinates": {
+        "lat": 19.082,
+        "lng": 72.836
+      },
+      "originalPrice": 2200,
+      "rescuePrice": 0,
+      "discountPercent": 100,
+      "portionsTotal": 25,
+      "portionsLeft": 25,
+      "limitPerBuyer": 10,
+      "pickupWindow": "22:00 – 23:30 today",
+      "pickupStart": "22:00",
+      "pickupEnd": "23:30",
+      "freshnessCutoff": "Consume within 2 hours of collection",
+      "holdTemperature": "Commercial chafing warmers at > 68°C",
+      "status": "Available",
+      "isDonation": true,
+      "category": "Catering",
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+      "description": "High quality surplus from a corporate luncheon banquet. Handled by certified chefs in sealed food-grade containers. Free community rescue for NGOs or hungry neighbours.",
+      "allergens": [
+        "Dairy"
+      ],
+      "dietary": [
+        "Vegetarian"
+      ],
+      "fssaiLicense": "FSSAI #11521011002241",
+      "fssaiVerified": true,
+      "ngoEscalated": true,
+      "createdAt": "2026-09-05T19:35:41.571Z",
+      "updatedAt": "2026-09-05T19:35:41.571Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-initial-demo",
+      "rescueId": "rq-101",
+      "title": "Artisan Sourdough & Croissant Box",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Crust & Co. Bakery",
+      "buyerId": "usr-buyer-demo",
+      "buyerName": "Rahul Sharma",
+      "portions": 2,
+      "totalAmount": 298,
+      "savings": 982,
+      "otp": "4829",
+      "qrData": "RESQ-ORDER-ord-initial-demo-4829-BANDRA",
+      "pickupWindow": "20:30 – 22:00 today",
+      "status": "Ready for Pickup",
+      "paymentMethod": "UPI Sandbox (GPay)",
+      "address": "Shop 4, Hill Road, Near Bandra Station, Mumbai 400050",
+      "createdAt": "2026-09-05T18:35:41.571Z"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-initial-demo",
+      "rescueId": "rq-102",
+      "rescueTitle": "North Indian Thali Surplus (5 meals)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Spice Route Kitchen",
+      "sellerAddress": "14th Road, Off Linking Road, Khar West, Mumbai 400052",
+      "portionsClaimed": 6,
+      "ngoId": "usr-ngo-demo",
+      "ngoName": "Roti Bank Mumbai",
+      "vehicleId": "MH-02-CD-4421",
+      "claimedAt": "19:45",
+      "eta": "20 mins",
+      "status": "Dispatched for Pickup",
+      "createdAt": "2026-09-05T17:35:41.571Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-1",
+      "userId": "usr-buyer-demo",
+      "title": "Pickup Pass Ready: Crust & Co. Bakery",
+      "message": "Your reservation for Artisan Sourdough Box is ready for collection with OTP 4829.",
+      "time": "12m ago",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-initial-demo",
+      "createdAt": "2026-09-05T20:23:41.571Z"
+    },
+    {
+      "id": "notif-2",
+      "userId": "usr-ngo-demo",
+      "title": "Emergency Donation Available in Santacruz",
+      "message": "Grand Banquet Catering posted 25 portions of hot meals available for 0 cost NGO rescue.",
+      "time": "35m ago",
+      "read": false,
+      "type": "ngo",
+      "link": "/ngo",
+      "createdAt": "2026-09-05T20:00:41.571Z"
+    },
+    {
+      "id": "notif-3",
+      "userId": "usr-seller-demo",
+      "title": "Surplus Batch Nearing Cutoff",
+      "message": "North Indian Thali has 4 portions remaining with pickup cutoff in 45 minutes.",
+      "time": "1h ago",
+      "read": true,
+      "type": "system",
+      "link": "/seller",
+      "createdAt": "2026-09-05T19:35:41.571Z"
+    }
+  ]
+}

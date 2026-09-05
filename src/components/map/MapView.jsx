@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { haversineDistance } from '../../utils/geoUtils';
+import { haversineDistance, INDIA_GEO_CONFIG, INDIAN_CITIES } from '../../utils/geoUtils';
 import {
   MapPin,
   Clock,
@@ -17,15 +17,20 @@ import {
   ChevronDown,
   AlertCircle,
   Tag,
-  CheckCircle2
+  CheckCircle2,
+  Globe2,
+  Navigation
 } from 'lucide-react';
 
-// Fallback sample data in case backend/database is disconnected or empty
-const SAMPLE_RESCUES = [
+// Pan-India sample food rescues spanning major cities & regions
+const PAN_INDIA_SAMPLE_RESCUES = [
+  // Mumbai
   {
-    id: 'rq-101',
-    title: 'Artisan Sourdough & Croissant Box',
+    id: 'rq-mum-01',
+    title: 'Artisan Sourdough Loaves & Croissant Box',
     seller: 'Crust & Co. Bakery',
+    city: 'mumbai',
+    cityName: 'Mumbai',
     category: 'Bakery',
     portionsLeft: 4,
     originalPrice: 420,
@@ -39,80 +44,215 @@ const SAMPLE_RESCUES = [
     description: 'Fresh surplus sourdough loaves and flaky butter croissants baked this morning.'
   },
   {
-    id: 'rq-102',
-    title: 'North Indian Thali Surplus (5 meals)',
+    id: 'rq-mum-02',
+    title: 'North Indian Deluxe Thali (5 Meals)',
     seller: 'Spice Route Kitchen',
+    city: 'mumbai',
+    cityName: 'Mumbai',
     category: 'Restaurant',
-    portionsLeft: 5,
-    originalPrice: 650,
-    rescuePrice: 140,
+    portionsLeft: 6,
+    originalPrice: 300,
+    rescuePrice: 69,
     pickupWindow: '21:00 – 22:30 today',
     pickupStart: '21:00',
     pickupEnd: '22:30',
     address: '14th Road, Off Linking Road, Khar West, Mumbai 400052',
     coordinates: { lat: 19.0680, lng: 72.8390 },
     isExpiringSoon: false,
-    description: 'Nutritious complete thalis containing paneer butter masala, dal makhani, jeera rice & rotis.'
+    description: 'Paneer Makhani, Dal Tadka, Jeera Rice & 4 Tawa Phulkas prepared fresh for lunch/dinner.'
   },
+
+  // Delhi NCR
   {
-    id: 'rq-103',
-    title: 'Organic Hydroponic Greens & Salad Kit',
-    seller: 'FarmFresh Hub',
-    category: 'Groceries',
-    portionsLeft: 8,
-    originalPrice: 340,
-    rescuePrice: 80,
-    pickupWindow: '18:00 – 21:00 today',
-    pickupStart: '18:00',
-    pickupEnd: '21:00',
-    address: 'Shop 12, Turner Road, Bandra West, Mumbai 400050',
-    coordinates: { lat: 19.0570, lng: 72.8320 },
-    isExpiringSoon: false,
-    description: 'Crisp hydroponic lettuce heads, cherry tomatoes, and microgreens harvested yesterday.'
-  },
-  {
-    id: 'rq-104',
-    title: 'Cold Brew Coffee Bottles & Pastries',
-    seller: 'Kaffa Roasters',
-    category: 'Cafe',
-    portionsLeft: 2,
-    originalPrice: 580,
+    id: 'rq-del-01',
+    title: 'Daryaganj Style Butter Chicken & Naan Combo',
+    seller: 'Moti Mahal Delights',
+    city: 'delhi',
+    cityName: 'Delhi NCR',
+    category: 'Restaurant',
+    portionsLeft: 5,
+    originalPrice: 450,
     rescuePrice: 120,
-    pickupWindow: '19:00 – 20:30 today',
-    pickupStart: '19:00',
-    pickupEnd: '20:30',
-    address: 'Perry Cross Road, Bandra West, Mumbai 400050',
-    coordinates: { lat: 19.0550, lng: 72.8280 },
+    pickupWindow: '21:30 – 23:00 today',
+    pickupStart: '21:30',
+    pickupEnd: '23:00',
+    address: 'Block M, Connaught Place, New Delhi 110001',
+    coordinates: { lat: 28.6328, lng: 77.2197 },
     isExpiringSoon: true,
-    description: 'Single-origin Ethiopian cold brew bottles paired with freshly rolled cinnamon buns.'
+    description: 'Slow-cooked rich tomato gravy butter chicken with butter garlic naans.'
   },
   {
-    id: 'rq-105',
-    title: 'Buffet Excess: Paneer Tikka & Biryani',
-    seller: 'Grand Banquet Catering',
-    category: 'Catering',
-    portionsLeft: 25,
-    originalPrice: 2200,
-    rescuePrice: 0,
-    pickupWindow: '22:00 – 23:30 today',
-    pickupStart: '22:00',
-    pickupEnd: '23:30',
-    address: 'S.V. Road, Near Milan Subway, Santacruz West, Mumbai 400054',
-    coordinates: { lat: 19.0820, lng: 72.8360 },
+    id: 'rq-del-02',
+    title: 'Amritsari Chole Bhature Box (with Pickled Chillies)',
+    seller: 'Sitaram Sweets & Snacks',
+    city: 'delhi',
+    cityName: 'Delhi NCR',
+    category: 'Restaurant',
+    portionsLeft: 8,
+    originalPrice: 220,
+    rescuePrice: 50,
+    pickupWindow: '19:00 – 21:00 today',
+    pickupStart: '19:00',
+    pickupEnd: '21:00',
+    address: 'Paharganj Main Bazaar, New Delhi 110055',
+    coordinates: { lat: 28.6415, lng: 77.2140 },
+    isExpiringSoon: false,
+    description: 'Tangy pindi chole with fluffy bhature and spiced aloo sabzi.'
+  },
+
+  // Bengaluru
+  {
+    id: 'rq-blr-01',
+    title: 'Filter Coffee Flask & Ghee Podi Dosa Kit',
+    seller: 'Vidhyarthi Bhavan Express',
+    city: 'bengaluru',
+    cityName: 'Bengaluru',
+    category: 'Cafe',
+    portionsLeft: 6,
+    originalPrice: 280,
+    rescuePrice: 65,
+    pickupWindow: '18:00 – 20:30 today',
+    pickupStart: '18:00',
+    pickupEnd: '20:30',
+    address: '100ft Road, Indiranagar, Bengaluru 560038',
+    coordinates: { lat: 12.9784, lng: 77.6408 },
+    isExpiringSoon: false,
+    description: 'Crispy ghee roast dosas with gun powder podi, fresh coconut chutney & hot filter coffee.'
+  },
+  {
+    id: 'rq-blr-02',
+    title: 'Organic Salad Bowls & Sprouted Grain Boxes',
+    seller: 'The Green Bowl Co.',
+    city: 'bengaluru',
+    cityName: 'Bengaluru',
+    category: 'Groceries',
+    portionsLeft: 10,
+    originalPrice: 340,
+    rescuePrice: 85,
+    pickupWindow: '19:30 – 21:30 today',
+    pickupStart: '19:30',
+    pickupEnd: '21:30',
+    address: 'Koramangala 4th Block, Bengaluru 560034',
+    coordinates: { lat: 12.9345, lng: 77.6250 },
     isExpiringSoon: true,
-    description: 'Free community rescue for NGOs or hungry neighbours. Sealed food-grade packaging.'
+    description: 'High-protein grain bowls with avocado, microgreens, and lemon vinaigrette.'
+  },
+
+  // Hyderabad
+  {
+    id: 'rq-hyd-01',
+    title: 'Shahi Veg Dum Biryani Handi (with Mirchi Ka Salan)',
+    seller: 'Bawarchi Nawabi Kitchen',
+    city: 'hyderabad',
+    cityName: 'Hyderabad',
+    category: 'Restaurant',
+    portionsLeft: 7,
+    originalPrice: 380,
+    rescuePrice: 90,
+    pickupWindow: '21:00 – 23:00 today',
+    pickupStart: '21:00',
+    pickupEnd: '23:00',
+    address: 'Road No. 12, Banjara Hills, Hyderabad 500034',
+    coordinates: { lat: 17.4156, lng: 78.4350 },
+    isExpiringSoon: true,
+    description: 'Fragrant basmati rice layered with saffron, vegetables, and caramelized onions in sealed clay handi.'
+  },
+
+  // Pune
+  {
+    id: 'rq-pun-01',
+    title: 'Spicy Kattha Misal Pav with Jowar Bhakri',
+    seller: 'Katakirr Pune Kitchen',
+    city: 'pune',
+    cityName: 'Pune',
+    category: 'Restaurant',
+    portionsLeft: 4,
+    originalPrice: 180,
+    rescuePrice: 40,
+    pickupWindow: '19:00 – 21:00 today',
+    pickupStart: '19:00',
+    pickupEnd: '21:00',
+    address: 'FC Road, Deccan Gymkhana, Pune 411004',
+    coordinates: { lat: 18.5196, lng: 73.8415 },
+    isExpiringSoon: false,
+    description: 'Authentic Kolhapuri style rassa misal with fresh farsan, chopped onions and soft pavs.'
+  },
+
+  // Kolkata
+  {
+    id: 'rq-kol-01',
+    title: 'Park Street Kathi Roll Platter & Sweet Sandesh',
+    seller: 'Kusum Rolls & Sweets',
+    city: 'kolkata',
+    cityName: 'Kolkata',
+    category: 'Restaurant',
+    portionsLeft: 9,
+    originalPrice: 290,
+    rescuePrice: 70,
+    pickupWindow: '20:00 – 22:30 today',
+    pickupStart: '20:00',
+    pickupEnd: '22:30',
+    address: 'Park Street, Near Flurys, Kolkata 700016',
+    coordinates: { lat: 22.5510, lng: 88.3524 },
+    isExpiringSoon: false,
+    description: 'Crispy flaky paratha kathi rolls filled with paneer tikka, mint chutney and sweet nolen gur sandesh.'
+  },
+
+  // Chennai
+  {
+    id: 'rq-chn-01',
+    title: 'Traditional South Indian Tiffin (Idli, Vada, Kesari)',
+    seller: 'Saravana Bhavan Hub',
+    city: 'chennai',
+    cityName: 'Chennai',
+    category: 'Restaurant',
+    portionsLeft: 12,
+    originalPrice: 240,
+    rescuePrice: 50,
+    pickupWindow: '19:00 – 21:30 today',
+    pickupStart: '19:00',
+    pickupEnd: '21:30',
+    address: 'Pondy Bazaar, T. Nagar, Chennai 600017',
+    coordinates: { lat: 13.0418, lng: 80.2342 },
+    isExpiringSoon: true,
+    description: 'Steaming soft mallipoo idlis, crispy medu vadas, piping hot drumstick sambar and pineapple kesari.'
+  },
+
+  // Jaipur
+  {
+    id: 'rq-jai-01',
+    title: 'Rajasthani Dal Baati Churma Royal Thali',
+    seller: 'Rawat Mishthan Bhandar',
+    city: 'jaipur',
+    cityName: 'Jaipur',
+    category: 'Catering',
+    portionsLeft: 8,
+    originalPrice: 350,
+    rescuePrice: 85,
+    pickupWindow: '20:00 – 22:30 today',
+    pickupStart: '20:00',
+    pickupEnd: '22:30',
+    address: 'Station Road, Sindhi Camp, Jaipur 302001',
+    coordinates: { lat: 26.9216, lng: 75.7958 },
+    isExpiringSoon: false,
+    description: 'Oven-baked baatis dipped in pure desi ghee, served with panchmel dal and sweet jaggery churma.'
   }
 ];
 
 export default function MapView({ rescues = [], onSelectRescue, selectedId = null }) {
-  // Use sample data if database/backend data is not available yet
+  // Use pan-India sample data if external listings not provided or for demonstration
   const activeDataList = useMemo(() => {
     if (Array.isArray(rescues) && rescues.length > 0) {
-      return rescues;
+      // Merge with coordinates if available
+      return rescues.map(r => ({
+        ...r,
+        coordinates: r.coordinates || { lat: 19.0596, lng: 72.8295 }
+      }));
     }
-    return SAMPLE_RESCUES;
+    return PAN_INDIA_SAMPLE_RESCUES;
   }, [rescues]);
 
+  const [selectedCityId, setSelectedCityId] = useState('all-india');
   const [activePinId, setActivePinId] = useState(selectedId || activeDataList[0]?.id);
   const [selectedRadius, setSelectedRadius] = useState('All'); // 'All' | 2 | 5 | 10 | 20
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -141,7 +281,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
     }
   }, [selectedId]);
 
-  // Compute distances dynamically from user location or simulated Bandra center
+  // Compute distances dynamically from user location or default Indian center
   const enrichedRescues = useMemo(() => {
     const baseLat = userLocation?.lat || 19.0596;
     const baseLng = userLocation?.lng || 72.8295;
@@ -157,10 +297,21 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
     });
   }, [activeDataList, userLocation]);
 
-  // Apply filters
+  // Filter rescues by selected Indian city and other criteria
   const filteredRescues = useMemo(() => {
     return enrichedRescues.filter((rescue) => {
-      // Distance filter
+      // City Filter
+      if (selectedCityId !== 'all-india') {
+        const cityConfig = INDIAN_CITIES.find(c => c.id === selectedCityId);
+        if (cityConfig) {
+          // Check proximity to selected city center (within 60 km radius) or matching city tag
+          const distToCity = haversineDistance(cityConfig.lat, cityConfig.lng, rescue.coordinates.lat, rescue.coordinates.lng);
+          const matchesCityTag = rescue.city === selectedCityId || (rescue.address && rescue.address.toLowerCase().includes(cityConfig.name.toLowerCase()));
+          if (distToCity > 60 && !matchesCityTag) return false;
+        }
+      }
+
+      // Distance filter (from user or center)
       if (selectedRadius !== 'All') {
         const maxDist = Number(selectedRadius);
         if (rescue.calculatedDistance > maxDist) return false;
@@ -186,7 +337,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
 
       return true;
     });
-  }, [enrichedRescues, selectedRadius, categoryFilter, priceFilter, availabilityFilter]);
+  }, [enrichedRescues, selectedCityId, selectedRadius, categoryFilter, priceFilter, availabilityFilter]);
 
   const activeRescue = useMemo(() => {
     return enrichedRescues.find((r) => r.id === activePinId) || filteredRescues[0] || enrichedRescues[0];
@@ -195,14 +346,14 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
   const getCategoryIcon = (category) => {
     const c = (category || '').toLowerCase();
     if (c.includes('bake')) return '🥐';
-    if (c.includes('restaur') || c.includes('thali') || c.includes('biryani')) return '🍛';
+    if (c.includes('restaur') || c.includes('thali') || c.includes('biryani') || c.includes('chole')) return '🍛';
     if (c.includes('groc')) return '🥕';
     if (c.includes('cater') || c.includes('buffet') || c.includes('mess')) return '🍲';
-    if (c.includes('cafe')) return '☕';
+    if (c.includes('cafe') || c.includes('coffee')) return '☕';
     return '🥗';
   };
 
-  // 1. Initialize Leaflet Map
+  // 1. Initialize Map with India Geo Bounds
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -211,11 +362,11 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
       mapInstanceRef.current = null;
     }
 
-    const defaultCenter = [19.0596, 72.8350]; // Bandra West, Mumbai
-
+    // Default: Centered on India overview
     const map = L.map(mapContainerRef.current, {
-      center: defaultCenter,
-      zoom: 14,
+      center: [INDIA_GEO_CONFIG.center.lat, INDIA_GEO_CONFIG.center.lng],
+      zoom: INDIA_GEO_CONFIG.zoom,
+      minZoom: 4,
       zoomControl: false,
       attributionControl: false
     });
@@ -223,10 +374,10 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
     // Custom positioned zoom controls
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // OpenStreetMap Clean Tile Layer
+    // OpenStreetMap Clean Tile Layer with India coverage
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     mapInstanceRef.current = map;
@@ -239,7 +390,19 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
     };
   }, []);
 
-  // 2. Render Markers on the Leaflet Map
+  // 2. FlyTo Handler when City Changes
+  const handleSelectCity = (cityId) => {
+    setSelectedCityId(cityId);
+    const city = INDIAN_CITIES.find(c => c.id === cityId);
+    if (city && mapInstanceRef.current) {
+      mapInstanceRef.current.flyTo([city.lat, city.lng], city.zoom, {
+        duration: 1.4,
+        easeLinearity: 0.25
+      });
+    }
+  };
+
+  // 3. Render Food Markers across India
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -254,7 +417,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
       const isFree = rescue.rescuePrice === 0;
       const priceText = isFree ? 'FREE' : `₹${rescue.rescuePrice}`;
 
-      // Custom Leaflet Emerald Marker HTML
+      // Custom Leaflet Emerald Marker HTML with Indian branding
       const pinHtml = `
         <div style="transform: translate(-50%, -100%); cursor: pointer;" class="group transition-transform">
           <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
@@ -266,7 +429,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
               display: flex;
               align-items: center;
               justify-content: center;
-              box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+              box-shadow: 0 6px 14px rgba(0,0,0,0.3);
               border: 2px solid white;
               transition: all 0.2s ease;
             ">
@@ -314,9 +477,9 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
       const popupDiv = document.createElement('div');
       popupDiv.className = 'p-1 font-sans text-slate-800';
       popupDiv.innerHTML = `
-        <div style="font-family: inherit; min-width: 220px;">
+        <div style="font-family: inherit; min-width: 230px;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-            <span style="font-size: 10px; font-weight: 800; color: #059669; text-transform: uppercase; letter-spacing: 0.5px;">${rescue.category || 'Surplus'}</span>
+            <span style="font-size: 10px; font-weight: 800; color: #059669; text-transform: uppercase; letter-spacing: 0.5px;">${rescue.category || 'Surplus'} · ${rescue.cityName || 'India'}</span>
             <span style="font-size: 10px; font-weight: 700; color: #64748b;">${rescue.calculatedDistance} km away</span>
           </div>
 
@@ -368,7 +531,6 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
 
       marker.bindPopup(popupDiv);
 
-      // Marker click handler
       marker.on('click', () => {
         setActivePinId(rescue.id);
       });
@@ -382,15 +544,9 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
 
       markersRef.current[rescue.id] = marker;
     });
+  }, [filteredRescues, activePinId, onSelectRescue]);
 
-    // Fit map bounds if there are markers
-    if (filteredRescues.length > 0 && !userLocation) {
-      const group = L.featureGroup(Object.values(markersRef.current));
-      map.fitBounds(group.getBounds().pad(0.15));
-    }
-  }, [filteredRescues, activePinId, onSelectRescue, userLocation]);
-
-  // 3. "Use My Location" Geolocation Handler
+  // 4. "Use My Location" Geolocation Handler
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
       setLocationError('Geolocation is not supported by your browser.');
@@ -409,14 +565,13 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
         const map = mapInstanceRef.current;
         if (!map) return;
 
-        // Remove old user marker
         if (userMarkerRef.current) {
           userMarkerRef.current.remove();
         }
 
         const userPinHtml = `
           <div style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <div style="position: absolute; width: 32px; height: 32px; border-radius: 50%; background-color: rgba(16, 185, 129, 0.3); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+            <div style="position: absolute; width: 34px; height: 34px; border-radius: 50%; background-color: rgba(16, 185, 129, 0.35); animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
             <div style="width: 18px; height: 18px; border-radius: 50%; background-color: #059669; border: 3px solid white; box-shadow: 0 4px 10px rgba(5, 150, 105, 0.5);"></div>
           </div>
         `;
@@ -424,21 +579,21 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
         const userIcon = L.divIcon({
           className: 'user-gps-pin',
           html: userPinHtml,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
+          iconSize: [34, 34],
+          iconAnchor: [17, 17]
         });
 
         const userMarker = L.marker([latitude, longitude], { icon: userIcon }).addTo(map);
-        userMarker.bindPopup('<div style="font-weight: 800; font-size: 12px; color: #059669;">📍 Your Current Location</div>').openPopup();
+        userMarker.bindPopup('<div style="font-weight: 800; font-size: 12px; color: #059669;">📍 Your Location in India</div>').openPopup();
         userMarkerRef.current = userMarker;
 
-        map.setView([latitude, longitude], 14, { animate: true });
+        map.setView([latitude, longitude], 13, { animate: true });
       },
       (err) => {
         setIsLocating(false);
         let message = 'Could not access your location.';
         if (err.code === err.PERMISSION_DENIED) {
-          message = 'Location access was denied. Please allow location permissions in your browser to find food closest to you.';
+          message = 'Location access was denied. Please allow location permissions in your browser to find food closest to you in India.';
         } else if (err.code === err.POSITION_UNAVAILABLE) {
           message = 'Location information is currently unavailable.';
         } else if (err.code === err.TIMEOUT) {
@@ -453,68 +608,96 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
   return (
     <div className="relative w-full h-[640px] rounded-3xl overflow-hidden border border-slate-200 shadow-card bg-slate-900 select-none">
       
-      {/* Real Leaflet.js Interactive Map Container */}
+      {/* Real Leaflet.js Interactive Map Container with OpenStreetMap Tiles */}
       <div ref={mapContainerRef} className="w-full h-full z-0" />
 
-      {/* Top Floating Control Bar */}
-      <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-2.5 pointer-events-none">
+      {/* Top Level Indian City Quick Switcher Bar */}
+      <div className="absolute top-4 left-4 right-4 z-20 flex flex-col gap-2 pointer-events-none">
         
-        {/* Left: Radius Filters */}
-        <div className="pointer-events-auto flex items-center gap-1 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-700/80 shadow-lg text-xs">
-          <span className="text-slate-400 font-bold px-2 flex items-center gap-1 text-[11px]">
-            <Compass className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Radius:</span>
+        {/* Row 1: Pan-India Quick City Pills */}
+        <div className="pointer-events-auto flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-700/80 shadow-lg overflow-x-auto scrollbar-none text-xs">
+          <span className="text-emerald-400 font-extrabold px-2 flex items-center gap-1 shrink-0 text-[11px] uppercase tracking-wider">
+            <Globe2 className="w-3.5 h-3.5" />
+            <span>Map of India:</span>
           </span>
-          {['All', '2', '5', '10'].map((radius) => (
-            <button
-              key={radius}
-              onClick={() => setSelectedRadius(radius)}
-              className={`px-2.5 py-1 rounded-xl font-bold transition-all text-xs ${
-                selectedRadius === radius
-                  ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              {radius === 'All' ? 'All' : `${radius}km`}
-            </button>
-          ))}
+
+          {INDIAN_CITIES.map((city) => {
+            const isSelected = selectedCityId === city.id;
+            return (
+              <button
+                key={city.id}
+                onClick={() => handleSelectCity(city.id)}
+                className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all flex items-center gap-1 shrink-0 text-xs ${
+                  isSelected
+                    ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold scale-105'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <span>{city.flag}</span>
+                <span>{city.name}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Right Actions: Filters Drawer Toggle + Use My Location */}
-        <div className="pointer-events-auto flex items-center gap-2">
-          {/* Use My Location Button */}
-          <button
-            onClick={handleUseMyLocation}
-            disabled={isLocating}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-slate-900/90 hover:bg-slate-800 backdrop-blur-md border border-slate-700/80 text-emerald-300 text-xs font-bold shadow-lg transition-all"
-          >
-            <LocateFixed className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin text-emerald-400' : ''}`} />
-            <span>{isLocating ? 'Locating...' : 'Use My Location'}</span>
-          </button>
+        {/* Row 2: Secondary Controls (Radius + Locate Me + Filters) */}
+        <div className="flex items-center justify-between gap-2">
+          
+          {/* Radius Selector */}
+          <div className="pointer-events-auto flex items-center gap-1 bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-slate-700/80 shadow-md text-xs">
+            <span className="text-slate-400 font-bold px-2 flex items-center gap-1 text-[11px]">
+              <Compass className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">Radius:</span>
+            </span>
+            {['All', '5', '10', '25'].map((r) => (
+              <button
+                key={r}
+                onClick={() => setSelectedRadius(r)}
+                className={`px-2 py-0.5 rounded-lg font-bold text-xs transition-all ${
+                  selectedRadius === r
+                    ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                {r === 'All' ? 'All' : `${r}km`}
+              </button>
+            ))}
+          </div>
 
-          {/* Filter Dropdown Toggle */}
-          <button
-            onClick={() => setShowFiltersPanel(!showFiltersPanel)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl backdrop-blur-md border text-xs font-bold shadow-lg transition-all ${
-              showFiltersPanel
-                ? 'bg-emerald-500 text-slate-950 border-emerald-400'
-                : 'bg-slate-900/90 hover:bg-slate-800 text-slate-200 border-slate-700/80'
-            }`}
-          >
-            <Filter className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Filters</span>
-            <ChevronDown className={`w-3 h-3 transition-transform ${showFiltersPanel ? 'rotate-180' : ''}`} />
-          </button>
+          {/* Right Action Buttons */}
+          <div className="pointer-events-auto flex items-center gap-2">
+            <button
+              onClick={handleUseMyLocation}
+              disabled={isLocating}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 backdrop-blur-md border border-slate-700/80 text-emerald-300 text-xs font-bold shadow-md transition-all"
+            >
+              <LocateFixed className={`w-3.5 h-3.5 ${isLocating ? 'animate-spin text-emerald-400' : ''}`} />
+              <span>{isLocating ? 'Locating...' : 'Use My Location'}</span>
+            </button>
+
+            <button
+              onClick={() => setShowFiltersPanel(!showFiltersPanel)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl backdrop-blur-md border text-xs font-bold shadow-md transition-all ${
+                showFiltersPanel
+                  ? 'bg-emerald-500 text-slate-950 border-emerald-400'
+                  : 'bg-slate-900/90 hover:bg-slate-800 text-slate-200 border-slate-700/80'
+              }`}
+            >
+              <Filter className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Filters</span>
+              <ChevronDown className={`w-3 h-3 transition-transform ${showFiltersPanel ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Expandable Advanced Filter Panel Overlay */}
       {showFiltersPanel && (
-        <div className="absolute top-16 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 z-30 bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-slate-700 shadow-2xl text-xs space-y-3.5 text-slate-200 animate-slide-up">
+        <div className="absolute top-28 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 z-30 bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-slate-700 shadow-2xl text-xs space-y-3.5 text-slate-200 animate-slide-up">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <span className="font-extrabold uppercase tracking-wider text-[10px] text-emerald-400 flex items-center gap-1">
               <Filter className="w-3 h-3" />
-              Advanced Map Filters
+              Pan-India Map Filters
             </span>
             <button
               onClick={() => setShowFiltersPanel(false)}
@@ -595,17 +778,19 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
 
           {/* Reset Filters */}
           <div className="pt-2 border-t border-slate-800 flex justify-between items-center text-[11px]">
-            <span className="text-slate-400">{filteredRescues.length} locations found</span>
+            <span className="text-slate-400">{filteredRescues.length} locations active</span>
             <button
               onClick={() => {
+                setSelectedCityId('all-india');
                 setSelectedRadius('All');
                 setCategoryFilter('All');
                 setPriceFilter('All');
                 setAvailabilityFilter('All');
+                handleSelectCity('all-india');
               }}
               className="text-emerald-400 hover:underline font-bold"
             >
-              Reset All
+              Reset to All India
             </button>
           </div>
         </div>
@@ -613,7 +798,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
 
       {/* Geolocation Error Toast Alert */}
       {locationError && (
-        <div className="absolute top-20 left-4 right-4 sm:left-4 sm:right-auto sm:max-w-md z-30 bg-rose-950/90 backdrop-blur-md border border-rose-500/50 text-white p-3 rounded-2xl shadow-xl flex items-start gap-2.5 animate-slide-up">
+        <div className="absolute top-28 left-4 right-4 sm:left-4 sm:right-auto sm:max-w-md z-30 bg-rose-950/90 backdrop-blur-md border border-rose-500/50 text-white p-3 rounded-2xl shadow-xl flex items-start gap-2.5 animate-slide-up">
           <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
           <div className="text-xs flex-1">
             <span className="font-bold block text-rose-200">Location Access Notice</span>
@@ -635,7 +820,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/50">
-                  {activeRescue.calculatedDistance} km away
+                  {activeRescue.cityName || 'India'} · {activeRescue.calculatedDistance} km
                 </span>
                 <span className="text-xs text-slate-500 font-semibold truncate max-w-[150px]">
                   {activeRescue.seller}
@@ -668,7 +853,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
                 {activeRescue.rescuePrice === 0 ? 'FREE' : `₹${activeRescue.rescuePrice}`}
                 {activeRescue.originalPrice > 0 && (
                   <span className="text-xs text-slate-400 font-normal line-through ml-1.5">
-                    ₹{activeRescue.originalPrice}
+                    ₹${activeRescue.originalPrice}
                   </span>
                 )}
               </div>

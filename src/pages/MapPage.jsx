@@ -15,13 +15,13 @@ export default function MapPage({ onNavigate, onSelectRescue }) {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">
             <Navigation className="w-3.5 h-3.5" />
-            Live Geo-Radar
+            <span>Interactive Pan-India Map</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-display">
-            Rescue map
+            Map of India
           </h1>
           <p className="text-sm text-slate-600 mt-1">
-            Location matching uses a simulated GPS fix at <strong className="text-slate-800">{simulatedLocation.name}</strong>. Tap a pin to preview a rescue.
+            Explore surplus food across major Indian cities on OpenStreetMap. Tap any city or marker to view pickup details.
           </p>
         </div>
 

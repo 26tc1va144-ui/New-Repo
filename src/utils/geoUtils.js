@@ -315,3 +315,34 @@ function isToday(date) {
     date.getDate() === now.getDate()
   );
 }
+
+/**
+ * Geographic configuration for Map of India
+ */
+export const INDIA_GEO_CONFIG = {
+  center: { lat: 21.7679, lng: 78.8718 }, // Geographic center of India
+  zoom: 5,
+  minZoom: 4,
+  maxBounds: [
+    [6.5, 68.0],   // Southwest corner of India
+    [37.5, 97.5]   // Northeast corner of India
+  ]
+};
+
+/**
+ * Major Indian metropolitan hubs and regions for quick map navigation
+ */
+export const INDIAN_CITIES = [
+  { id: 'all-india', name: 'All India', state: 'National', lat: 21.7679, lng: 78.8718, zoom: 5, flag: '🇮🇳' },
+  { id: 'mumbai', name: 'Mumbai', state: 'Maharashtra', lat: 19.0760, lng: 72.8777, zoom: 12, flag: '🌊' },
+  { id: 'delhi', name: 'Delhi NCR', state: 'Delhi NCR', lat: 28.6139, lng: 77.2090, zoom: 12, flag: '🏛️' },
+  { id: 'bengaluru', name: 'Bengaluru', state: 'Karnataka', lat: 12.9716, lng: 77.5946, zoom: 12, flag: '☕' },
+  { id: 'hyderabad', name: 'Hyderabad', state: 'Telangana', lat: 17.3850, lng: 78.4867, zoom: 12, flag: '🍛' },
+  { id: 'pune', name: 'Pune', state: 'Maharashtra', lat: 18.5204, lng: 73.8567, zoom: 12, flag: '🎓' },
+  { id: 'kolkata', name: 'Kolkata', state: 'West Bengal', lat: 22.5726, lng: 88.3639, zoom: 12, flag: '🚖' },
+  { id: 'chennai', name: 'Chennai', state: 'Tamil Nadu', lat: 13.0827, lng: 80.2707, zoom: 12, flag: '🏖️' },
+  { id: 'ahmedabad', name: 'Ahmedabad', state: 'Gujarat', lat: 23.0225, lng: 72.5714, zoom: 12, flag: '🪁' },
+  { id: 'jaipur', name: 'Jaipur', state: 'Rajasthan', lat: 26.9124, lng: 75.7873, zoom: 12, flag: '🏰' },
+  { id: 'lucknow', name: 'Lucknow', state: 'Uttar Pradesh', lat: 26.8467, lng: 80.9462, zoom: 12, flag: '👑' },
+  { id: 'chandigarh', name: 'Chandigarh', state: 'Punjab', lat: 30.7333, lng: 76.7794, zoom: 12, flag: '🌾' }
+];

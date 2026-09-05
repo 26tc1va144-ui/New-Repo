@@ -184,7 +184,7 @@ export function formatCountdown(minutes) {
  */
 export const IMPACT_PER_MEAL = {
   co2Kg: 2.4,       // kg CO₂e avoided per meal
-  waterLitres: 180, // litres embedded water saved
+  waterLitres: 16,  // practical litres prep & wash water saved per meal
   foodKg: 0.45,     // kg food diverted from landfill
 };
 

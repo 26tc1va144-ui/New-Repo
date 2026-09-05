@@ -285,13 +285,16 @@ export const MOCK_SELLER_STATS = {
 };
 
 export const MOCK_COMMUNITY_IMPACT = {
-  mealsRescued: 48210,
-  co2eAvoidedTons: 19.4,
-  kmDrivenEquivalent: 96000,
-  waterSavedLitres: '7.1M',
-  peopleFed: 12480,
-  participatingStores: 142,
-  activeNgoPartners: 28
+  mealsRescued: 248,
+  co2eAvoidedTons: 0.6,
+  co2eAvoidedKg: 595,
+  co2Display: '595 kg',
+  kmDrivenEquivalent: 2440,
+  waterSavedLitres: 4280,
+  waterDisplay: '4,280 L',
+  peopleFed: 210,
+  participatingStores: 6,
+  activeNgoPartners: 3
 };
 
 export const MOCK_SAFETY_FAQS = [

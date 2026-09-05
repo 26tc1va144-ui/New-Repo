@@ -33,11 +33,11 @@ export default function ImpactPage({ onNavigate }) {
 
   // Calculations per rescue meal:
   // ~ 2.4 kg CO2e per meal
-  // ~ 180 Litres water per meal
+  // ~ 16 Litres direct food prep & washing water per meal
   // ~ ₹260 savings per meal
   const annualMeals = mealsPerWeek * 52;
   const annualCo2Kg = Math.round(annualMeals * 2.4);
-  const annualWaterL = Math.round(annualMeals * 180).toLocaleString();
+  const annualWaterL = Math.round(annualMeals * 16).toLocaleString();
   const annualSavings = Math.round(annualMeals * 260).toLocaleString();
   const annualFoodSavedKg = Math.round(annualMeals * 0.45);
 
@@ -45,14 +45,14 @@ export default function ImpactPage({ onNavigate }) {
   const userOrders = (orders || []).filter(o => !currentUser?.id || o.buyerId === currentUser.id);
   const userMealsRescued = userOrders.reduce((sum, o) => sum + (o.portions || 0), 0) || (currentUser?.role === 'buyer' ? 4 : 6);
   const userCo2Avoided = Math.round(userMealsRescued * 2.4);
-  const userWaterSaved = Math.round(userMealsRescued * 180);
+  const userWaterSaved = Math.round(userMealsRescued * 16);
   const userMoneySaved = userOrders.reduce((sum, o) => sum + (o.savings || (o.portions * 260)), 0) || (userMealsRescued * 260);
 
   // Live platform breakdown
-  const activeBatchesCount = (rescues || []).filter(r => r.portionsLeft > 0 && r.status !== 'Expired' && r.status !== 'Cancelled').length;
-  const livePortionsAvailable = (rescues || []).reduce((sum, r) => sum + (r.portionsLeft || 0), 0);
-  const totalStores = communityImpact?.participatingStores || (135 + new Set((rescues || []).map(r => r.seller)).size);
-  const totalNgoPartners = communityImpact?.activeNgoPartners || (28 + (ngoClaims || []).length);
+  const activeBatchesCount = (rescues || []).filter(r => (Number(r.portionsLeft) || 0) > 0 && r.status !== 'Expired' && r.status !== 'Cancelled').length;
+  const livePortionsAvailable = (rescues || []).reduce((sum, r) => sum + (Number(r.portionsLeft) || 0), 0);
+  const totalStores = communityImpact?.participatingStores || Math.max(new Set((rescues || []).map(r => r.seller || r.sellerName).filter(Boolean)).size, 5);
+  const totalNgoPartners = communityImpact?.activeNgoPartners || Math.max(new Set((ngoClaims || []).map(c => c.ngoName).filter(Boolean)).size, 3);
 
   const handleDownloadCertificate = () => {
     addToast(`Official Impact Certificate generated for ${currentUser?.name || 'Member'}!`, 'success');
@@ -91,7 +91,7 @@ export default function ImpactPage({ onNavigate }) {
             🍱
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact?.mealsRescued ? communityImpact.mealsRescued.toLocaleString() : '48,208'}
+            {communityImpact?.mealsRescued ? communityImpact.mealsRescued.toLocaleString() : '248'}
           </div>
           <div className="text-sm font-bold text-slate-800">
             Meals rescued
@@ -107,13 +107,13 @@ export default function ImpactPage({ onNavigate }) {
             🌱
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact?.co2eAvoidedTons || '115.6'} t
+            {communityImpact?.co2Display || (communityImpact?.co2eAvoidedKg ? `${communityImpact.co2eAvoidedKg} kg` : `${communityImpact?.co2eAvoidedTons || 0.6} t`)}
           </div>
           <div className="text-sm font-bold text-slate-800">
             CO₂e avoided
           </div>
           <div className="text-xs text-slate-500">
-            ≈ {(communityImpact?.kmDrivenEquivalent || 462400).toLocaleString()} km not driven
+            ≈ {(communityImpact?.kmDrivenEquivalent || 2450).toLocaleString()} km not driven
           </div>
         </div>
 
@@ -123,13 +123,13 @@ export default function ImpactPage({ onNavigate }) {
             💧
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact?.waterDisplay || '7.1M L'}
+            {communityImpact?.waterDisplay || `${(communityImpact?.waterSavedLitres || 4280).toLocaleString()} L`}
           </div>
           <div className="text-sm font-bold text-slate-800">
             Water saved
           </div>
           <div className="text-xs text-slate-500">
-            Embedded agricultural virtual water
+            Direct food prep & sanitation water conserved
           </div>
         </div>
 
@@ -139,7 +139,7 @@ export default function ImpactPage({ onNavigate }) {
             🤝
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact?.peopleFed ? communityImpact.peopleFed.toLocaleString() : '31,208'}
+            {communityImpact?.peopleFed ? communityImpact.peopleFed.toLocaleString() : '210'}
           </div>
           <div className="text-sm font-bold text-slate-800">
             People fed

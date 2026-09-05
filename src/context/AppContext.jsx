@@ -326,6 +326,11 @@ export function AppProvider({ children }) {
       });
       const norm = normalizeListing(created);
       setRescues(prev => [norm, ...prev.filter(l => l.id !== norm.id)]);
+      
+      // Proactively refresh community impact & seller stats so UI updates immediately
+      analyticsApi.getImpact().then(res => res && setCommunityImpact(res)).catch(() => {});
+      analyticsApi.getSeller(currentUser?.id || 'usr-seller-demo').then(res => res && setSellerStats(res)).catch(() => {});
+
       addToast(`Surplus batch "${norm.title}" is now live!`, 'success');
       return norm;
     } catch (err) {
@@ -546,18 +551,32 @@ export function AppProvider({ children }) {
           ],
           recentOrders: orders.slice(0, 5)
         },
-        communityImpact: {
-          mealsRescued: communityImpact?.mealsRescued ?? (48200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
-          co2eAvoidedTons: communityImpact?.co2eAvoidedTons ?? parseFloat(((115600 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 2.4) / 1000).toFixed(1)),
-          kmDrivenEquivalent: communityImpact?.kmDrivenEquivalent ?? (462400 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 12),
-          waterSavedLitres: communityImpact?.waterSavedLitres ?? (7100000 + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 180),
-          waterDisplay: communityImpact?.waterDisplay || `${(((communityImpact?.waterSavedLitres || 7100000) + orders.reduce((sum, o) => sum + (o.portions || 0), 0) * 180) / 1000000).toFixed(1)}M L`,
-          peopleFed: communityImpact?.peopleFed ?? (31200 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
-          participatingStores: communityImpact?.participatingStores ?? (135 + new Set(rescues.map(r => r.seller)).size),
-          activeNgoPartners: communityImpact?.activeNgoPartners ?? (28 + ngoClaims.length),
-          activeListingsCount: rescues.filter(l => l.portionsLeft > 0 && l.status !== 'Expired' && l.status !== 'Cancelled').length,
-          totalPortionsAvailable: rescues.reduce((sum, l) => sum + (l.portionsLeft || 0), 0)
-        },
+        communityImpact: (() => {
+          const totalListedPortions = (rescues || []).reduce((sum, r) => sum + (Number(r.portionsTotal) || Number(r.portions) || Number(r.portionsLeft) || 0), 0);
+          const buyerPortions = (orders || []).reduce((sum, o) => sum + (Number(o.portions) || 0), 0);
+          const ngoPortions = (ngoClaims || []).reduce((sum, c) => sum + (Number(c.portionsClaimed) || 0), 0);
+          const fallbackMeals = 180 + totalListedPortions + buyerPortions + ngoPortions;
+          const fallbackCo2Kg = Math.round(fallbackMeals * 2.4);
+          const fallbackCo2Tons = parseFloat((fallbackCo2Kg / 1000).toFixed(2));
+          const fallbackCo2Display = fallbackCo2Kg >= 1000 ? `${fallbackCo2Tons} t` : `${fallbackCo2Kg} kg`;
+          const fallbackWaterL = Math.round(fallbackMeals * 16);
+          const fallbackWaterDisplay = `${fallbackWaterL.toLocaleString()} L`;
+
+          return {
+            mealsRescued: communityImpact?.mealsRescued ?? fallbackMeals,
+            co2eAvoidedTons: communityImpact?.co2eAvoidedTons ?? fallbackCo2Tons,
+            co2eAvoidedKg: communityImpact?.co2eAvoidedKg ?? fallbackCo2Kg,
+            co2Display: communityImpact?.co2Display || fallbackCo2Display,
+            kmDrivenEquivalent: communityImpact?.kmDrivenEquivalent ?? Math.round(fallbackCo2Kg * 4.1),
+            waterSavedLitres: communityImpact?.waterSavedLitres ?? fallbackWaterL,
+            waterDisplay: communityImpact?.waterDisplay || fallbackWaterDisplay,
+            peopleFed: communityImpact?.peopleFed ?? Math.round(fallbackMeals * 0.85),
+            participatingStores: communityImpact?.participatingStores ?? Math.max(new Set((rescues || []).map(r => r.seller || r.sellerName).filter(Boolean)).size, 5),
+            activeNgoPartners: communityImpact?.activeNgoPartners ?? Math.max(new Set((ngoClaims || []).map(c => c.ngoName).filter(Boolean)).size, 3),
+            activeListingsCount: (rescues || []).filter(l => (Number(l.portionsLeft) || 0) > 0 && l.status !== 'Expired' && l.status !== 'Cancelled').length,
+            totalPortionsAvailable: (rescues || []).reduce((sum, l) => sum + (Number(l.portionsLeft) || 0), 0)
+          };
+        })(),
         ngos: [
           {
             id: 'ngo-1',

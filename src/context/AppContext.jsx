@@ -323,6 +323,18 @@ export function AppProvider({ children }) {
     addToast(`Successfully claimed ${rescue.portionsLeft} portions for ${ngoName} dispatch!`, 'success');
   };
 
+  // Notification management
+  const markNotificationAsRead = (id) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  };
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    addToast('All notifications marked as read', 'info');
+  };
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
   // Update listing
   const updateRescueListing = (id, updatedFields) => {
     setRescues(prev => prev.map(r => r.id === id ? { ...r, ...updatedFields } : r));

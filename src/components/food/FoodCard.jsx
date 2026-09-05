@@ -41,9 +41,18 @@ export default function FoodCard({ rescue, onSelect, onQuickReserve }) {
           )}
         </div>
 
-        {/* Category Badge (Top Right) */}
-        <div className="absolute top-3 right-3 z-10">
-          <span className="bg-white/90 backdrop-blur-md text-slate-800 font-medium text-xs px-2.5 py-1 rounded-full shadow-sm">
+        {/* Category Badge & Indian Veg Symbol (Top Right) */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
+          {rescue.dietary?.includes('Vegetarian') || rescue.dietary?.includes('Vegan') ? (
+            <span className="w-5 h-5 bg-white rounded-md border-2 border-emerald-600 flex items-center justify-center shadow-sm" title="100% Pure Veg (शाकाहारी)">
+              <span className="w-2 h-2 rounded-full bg-emerald-600" />
+            </span>
+          ) : (
+            <span className="w-5 h-5 bg-white rounded-md border-2 border-amber-800 flex items-center justify-center shadow-sm" title="Non-Vegetarian">
+              <span className="w-2 h-2 rounded-full bg-amber-800" />
+            </span>
+          )}
+          <span className="bg-white/95 backdrop-blur-md text-slate-800 font-semibold text-xs px-2.5 py-1 rounded-full shadow-sm border border-slate-100">
             {rescue.category}
           </span>
         </div>
@@ -78,6 +87,30 @@ export default function FoodCard({ rescue, onSelect, onQuickReserve }) {
           <h3 className="font-bold text-slate-900 text-base leading-snug group-hover:text-emerald-700 transition-colors line-clamp-1 mb-2 font-display">
             {rescue.title}
           </h3>
+
+          {/* Indian Dining Tags */}
+          <div className="flex items-center gap-1.5 flex-wrap mb-2">
+            {rescue.diningType && (
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                {rescue.diningType}
+              </span>
+            )}
+            {rescue.dietary?.includes('Jain') && (
+              <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                Jain Option
+              </span>
+            )}
+            {rescue.category === 'Hostel' && (
+              <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+                Hostel Dining
+              </span>
+            )}
+            {rescue.category === 'Mess' && (
+              <span className="text-[10px] font-bold text-orange-800 bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
+                PG / Mess Tiffin
+              </span>
+            )}
+          </div>
 
           {/* Pickup Window Info */}
           <div className="flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg mb-3">

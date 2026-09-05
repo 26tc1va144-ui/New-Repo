@@ -22,7 +22,19 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
   const [donationsOnly, setDonationsOnly] = useState(false);
   const [sortBy, setSortBy] = useState('distance'); // 'distance' | 'price-asc' | 'discount-desc' | 'urgency'
 
-  const categories = ['All', 'Bakery', 'Restaurant', 'Groceries', 'Catering', 'Cafe'];
+  const categories = [
+    'All',
+    'Bakery',
+    'Restaurant',
+    'Hostel',
+    'Mess',
+    'Household',
+    'Catering',
+    'Cafe',
+    'Groceries',
+    'Community Kitchen',
+    'Cloud Kitchen'
+  ];
 
   // Filter and sort rescues
   const filteredRescues = useMemo(() => {

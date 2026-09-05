@@ -60,6 +60,20 @@
         "lng": 72.8242
       },
       "createdAt": "2026-05-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr-226311",
+      "name": "U633445",
+      "email": "u633445@gmail.com",
+      "phone": "+91 98000 00000",
+      "role": "buyer",
+      "avatar": "U6",
+      "address": "Bandra West, Mumbai",
+      "coordinates": {
+        "lat": 19.0596,
+        "lng": 72.8295
+      },
+      "createdAt": "2026-09-05T22:27:06.311Z"
     }
   ],
   "listings": [

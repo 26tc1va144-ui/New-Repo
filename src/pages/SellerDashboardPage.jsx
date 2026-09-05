@@ -395,14 +395,55 @@ export default function SellerDashboardPage({ onNavigate }) {
                   </label>
                   <select
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) => {
+                      const cat = e.target.value;
+                      let img = formData.image;
+                      let hold = formData.holdTemperature;
+                      if (cat === 'Hostel') {
+                        img = 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Stored in insulated food-grade thermal containers (> 60°C)';
+                      } else if (cat === 'Mess') {
+                        img = 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Freshly prepared and packed in food-safe tiffin containers (> 60°C)';
+                      } else if (cat === 'Household') {
+                        img = 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Home-cooked today, covered in airtight stainless/glass containers (< 4 hours)';
+                      } else if (cat === 'Community Kitchen') {
+                        img = 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Maintained in thermal holding dispensers (> 65°C)';
+                      } else if (cat === 'Cloud Kitchen') {
+                        img = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Packed in tamper-evident food-grade containers (< 2 hours)';
+                      } else if (cat === 'Bakery') {
+                        img = 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Stored at ambient room temperature in protective bakery packaging (< 24°C)';
+                      } else if (cat === 'Restaurant') {
+                        img = 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Steam holding cabinet at > 65°C maintained continuously';
+                      } else if (cat === 'Groceries') {
+                        img = 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Crated at ambient/chilled produce temperature (< 12°C)';
+                      } else if (cat === 'Cafe') {
+                        img = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Chilled display counter maintained at < 5°C';
+                      } else if (cat === 'Catering') {
+                        img = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80';
+                        hold = 'Banquet hot holding vessels maintained at > 65°C';
+                      }
+                      setFormData({ ...formData, category: cat, image: img, holdTemperature: hold });
+                    }}
                     className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"
                   >
                     <option value="Bakery">Bakery</option>
                     <option value="Restaurant">Restaurant</option>
-                    <option value="Groceries">Groceries</option>
-                    <option value="Cafe">Cafe</option>
-                    <option value="Catering">Catering</option>
+                    <option value="Hostel">Hostel (Student/Working)</option>
+                    <option value="Mess">Mess (Dining Hall/PG)</option>
+                    <option value="Household">Household (Home Kitchen)</option>
+                    <option value="Catering">Catering & Events</option>
+                    <option value="Cafe">Cafe & Snacks</option>
+                    <option value="Groceries">Groceries & Produce</option>
+                    <option value="Community Kitchen">Community Kitchen (Langar/Trust)</option>
+                    <option value="Cloud Kitchen">Cloud Kitchen / Dhaba</option>
                   </select>
                 </div>
 

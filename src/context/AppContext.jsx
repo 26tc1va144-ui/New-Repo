@@ -6,10 +6,22 @@ import {
   MOCK_SELLER_STATS,
   MOCK_COMMUNITY_IMPACT
 } from '../data/mockData';
+import {
+  enrichRescuesWithDynamicData,
+  computeDynamicImpact,
+  computeDynamicSellerStats,
+  MUMBAI_LOCATIONS
+} from '../utils/geoUtils';
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
+  // Authentication state - compulsory sign in for all users
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('resq_auth_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
   // Current active role: 'buyer' | 'seller' | 'ngo'
   const [currentRole, setCurrentRole] = useState(() => {
     return localStorage.getItem('resq_role') || 'buyer';
@@ -67,7 +79,16 @@ export function AppProvider({ children }) {
   // Toast alert system
   const [toasts, setToasts] = useState([]);
 
-  // Sync to local storage
+  // Sync auth user to localStorage
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('resq_auth_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('resq_auth_user');
+    }
+  }, [currentUser]);
+
+  // Sync role to localStorage
   useEffect(() => {
     localStorage.setItem('resq_role', currentRole);
   }, [currentRole]);
@@ -87,6 +108,30 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('resq_ngo_claims', JSON.stringify(ngoClaims));
   }, [ngoClaims]);
+
+  // Auth actions
+  const login = (userData) => {
+    const role = userData.role || 'buyer';
+    const user = {
+      id: userData.id || `usr-${Date.now().toString().slice(-4)}`,
+      name: userData.name || (role === 'seller' ? 'Crust & Co. Bakery' : role === 'ngo' ? 'Roti Bank Mumbai' : 'Rahul S.'),
+      email: userData.email || (role === 'seller' ? 'manager@crustandco.com' : role === 'ngo' ? 'dispatch@rotibank.org' : 'rahul.s@example.com'),
+      role,
+      avatar: userData.avatar || (userData.name ? userData.name.slice(0, 2).toUpperCase() : role.slice(0, 2).toUpperCase()),
+      location: userData.location || simulatedLocation.name,
+      joinedAt: userData.joinedAt || 'September 2026'
+    };
+    setCurrentUser(user);
+    setCurrentRole(role);
+    addToast(`Signed in successfully as ${user.name}!`, 'success');
+    return user;
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('resq_auth_user');
+    addToast('You have been signed out.', 'info');
+  };
 
   const addToast = (message, type = 'success') => {
     const id = Date.now().toString();
@@ -278,42 +323,85 @@ export function AppProvider({ children }) {
     addToast(`Successfully claimed ${rescue.portionsLeft} portions for ${ngoName} dispatch!`, 'success');
   };
 
-  // Mark single or all notifications read
-  const markNotificationAsRead = (id) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  // Update listing
+  const updateRescueListing = (id, updatedFields) => {
+    setRescues(prev => prev.map(r => r.id === id ? { ...r, ...updatedFields } : r));
+    addToast('Listing updated successfully', 'success');
   };
 
-  const markAllNotificationsAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    addToast('All notifications marked as read', 'info');
+  // Delete listing
+  const deleteRescueListing = (id) => {
+    setRescues(prev => prev.filter(r => r.id !== id));
+    addToast('Listing removed from marketplace', 'info');
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  // Reset to default seed mock data
+  const resetToDefaultData = () => {
+    setRescues(INITIAL_RESCUES);
+    setOrders([]);
+    setNgoClaims([]);
+    setNotifications(MOCK_NOTIFICATIONS);
+    localStorage.removeItem('resq_rescues');
+    localStorage.removeItem('resq_orders');
+    localStorage.removeItem('resq_ngo_claims');
+    localStorage.removeItem('resq_notifications');
+    addToast('Demo environment reset to baseline seed data', 'info');
+  };
+
+  // Dynamic calculations
+  const dynamicRescues = enrichRescuesWithDynamicData(rescues, simulatedLocation);
+  const dynamicImpact = computeDynamicImpact(MOCK_COMMUNITY_IMPACT, orders, ngoClaims);
+  const dynamicSellerStats = computeDynamicSellerStats(
+    MOCK_SELLER_STATS,
+    rescues.filter(r => r.seller.includes('Crust')),
+    orders
+  );
 
   return (
     <AppContext.Provider
       value={{
+        // Auth state
+        currentUser,
+        setCurrentUser,
+        isAuthenticated: Boolean(currentUser),
+        login,
+        logout,
+
+        // Roles & Location
         currentRole,
         setCurrentRole,
         simulatedLocation,
         setSimulatedLocation,
+        mumbaiLocations: MUMBAI_LOCATIONS,
+
+        // Dynamic & Raw listings
         rescues,
+        dynamicRescues,
+        addRescueListing,
+        updateRescueListing,
+        deleteRescueListing,
+        escalateListingToNgo,
+        resetToDefaultData,
+
+        // Orders & claims
         orders,
+        createOrder,
+        verifyOrderOtp,
+        ngoClaims,
+        claimUnclaimedByNgo,
+
+        // Notifications & Toasts
         notifications,
         unreadCount,
-        ngoClaims,
+        markNotificationAsRead,
+        markAllNotificationsAsRead,
         toasts,
         addToast,
         removeToast,
-        addRescueListing,
-        escalateListingToNgo,
-        createOrder,
-        verifyOrderOtp,
-        claimUnclaimedByNgo,
-        markNotificationAsRead,
-        markAllNotificationsAsRead,
-        sellerStats: MOCK_SELLER_STATS,
-        communityImpact: MOCK_COMMUNITY_IMPACT,
+
+        // Stats & partners
+        sellerStats: dynamicSellerStats,
+        communityImpact: dynamicImpact,
         ngos: MOCK_NGOS
       }}
     >

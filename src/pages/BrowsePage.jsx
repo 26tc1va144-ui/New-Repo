@@ -13,7 +13,8 @@ import {
 } from 'lucide-react';
 
 export default function BrowsePage({ onNavigate, onSelectRescue }) {
-  const { rescues, simulatedLocation } = useApp();
+  const { dynamicRescues, rescues, simulatedLocation } = useApp();
+  const displayRescues = dynamicRescues || rescues;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -25,7 +26,7 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
 
   // Filter and sort rescues
   const filteredRescues = useMemo(() => {
-    return rescues
+    return displayRescues
       .filter((rescue) => {
         // Search query
         if (searchQuery.trim()) {

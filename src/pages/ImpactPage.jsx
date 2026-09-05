@@ -119,17 +119,17 @@ export default function ImpactPage({ onNavigate }) {
 
         {/* Metric 3 */}
         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-soft hover:shadow-card transition-all space-y-2 group">
-          <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold mb-4 group-hover:scale-110 transition-transform text-2xl">
-            💧
+          <div className="w-12 h-12 rounded-2xl bg-lime-100 text-lime-800 flex items-center justify-center font-bold mb-4 group-hover:scale-110 transition-transform text-2xl">
+            ♻️
           </div>
           <div className="text-4xl font-black text-slate-900 font-display">
-            {communityImpact?.waterDisplay || `${(communityImpact?.waterSavedLitres || 4280).toLocaleString()} L`}
+            {communityImpact?.landfillDisplay || `${communityImpact?.landfillDivertedKg || 125} kg`}
           </div>
           <div className="text-sm font-bold text-slate-800">
-            Water saved
+            Landfill diverted
           </div>
           <div className="text-xs text-slate-500">
-            Direct food prep & sanitation water conserved
+            Organic solid food waste kept out of city dumps
           </div>
         </div>
 

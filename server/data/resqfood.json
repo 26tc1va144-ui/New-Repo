@@ -64,6 +64,46 @@
   ],
   "listings": [
     {
+      "id": "rq-50764",
+      "title": "South Indian Mini Meals (6 boxes)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Spice Route Kitchen",
+      "sellerType": "Restaurant",
+      "rating": 4.9,
+      "reviewsCount": 1,
+      "location": "Khar West, Mumbai",
+      "address": "Shop 4, Hill Road, Bandra West, Mumbai",
+      "coordinates": {
+        "lat": 19.067174631293984,
+        "lng": 72.83189928389338
+      },
+      "originalPrice": 600,
+      "rescuePrice": 180,
+      "discountPercent": 70,
+      "portionsTotal": 6,
+      "portionsLeft": 6,
+      "limitPerBuyer": 3,
+      "pickupWindow": "20:30 – 22:30 today",
+      "pickupStart": "20:30",
+      "pickupEnd": "22:30",
+      "freshnessCutoff": "Best consumed within 4 hours",
+      "holdTemperature": "Stored at temperature-controlled conditions",
+      "status": "Available",
+      "isDonation": false,
+      "category": "Restaurant",
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
+      "description": "Fresh surplus prepared today, packaged safely according to FSSAI food hygiene standards.",
+      "allergens": [],
+      "dietary": [
+        "Vegetarian"
+      ],
+      "fssaiLicense": "FSSAI #11521008000452",
+      "fssaiVerified": true,
+      "ngoEscalated": false,
+      "createdAt": "2026-09-05T22:20:50.764Z",
+      "updatedAt": "2026-09-05T22:20:50.764Z"
+    },
+    {
       "id": "rq-87459",
       "title": "Organic Veggie Puffs (10 pack)",
       "sellerId": "usr-seller-demo",

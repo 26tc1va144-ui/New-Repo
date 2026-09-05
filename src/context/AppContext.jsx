@@ -559,6 +559,8 @@ export function AppProvider({ children }) {
           const fallbackCo2Kg = Math.round(fallbackMeals * 2.4);
           const fallbackCo2Tons = parseFloat((fallbackCo2Kg / 1000).toFixed(2));
           const fallbackCo2Display = fallbackCo2Kg >= 1000 ? `${fallbackCo2Tons} t` : `${fallbackCo2Kg} kg`;
+          const fallbackLandfillKg = parseFloat((fallbackMeals * 0.45).toFixed(1));
+          const fallbackLandfillDisplay = fallbackLandfillKg >= 1000 ? `${(fallbackLandfillKg / 1000).toFixed(2)} t` : `${fallbackLandfillKg} kg`;
           const fallbackWaterL = Math.round(fallbackMeals * 16);
           const fallbackWaterDisplay = `${fallbackWaterL.toLocaleString()} L`;
 
@@ -568,6 +570,8 @@ export function AppProvider({ children }) {
             co2eAvoidedKg: communityImpact?.co2eAvoidedKg ?? fallbackCo2Kg,
             co2Display: communityImpact?.co2Display || fallbackCo2Display,
             kmDrivenEquivalent: communityImpact?.kmDrivenEquivalent ?? Math.round(fallbackCo2Kg * 4.1),
+            landfillDivertedKg: communityImpact?.landfillDivertedKg ?? fallbackLandfillKg,
+            landfillDisplay: communityImpact?.landfillDisplay || fallbackLandfillDisplay,
             waterSavedLitres: communityImpact?.waterSavedLitres ?? fallbackWaterL,
             waterDisplay: communityImpact?.waterDisplay || fallbackWaterDisplay,
             peopleFed: communityImpact?.peopleFed ?? Math.round(fallbackMeals * 0.85),

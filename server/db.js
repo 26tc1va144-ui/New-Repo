@@ -913,6 +913,12 @@ class Database {
     // 1 kg CO2e ≈ 4.1 km not driven in an average petrol vehicle
     const kmDrivenEquivalent = Math.round(co2eAvoidedKg * 4.1);
 
+    // Landfill diversion: ~0.45 kg organic solid food waste kept out of city dump per meal
+    const landfillDivertedKg = parseFloat((mealsRescued * IMPACT_PER_MEAL.foodKg).toFixed(1));
+    const landfillDisplay = landfillDivertedKg >= 1000
+      ? `${(landfillDivertedKg / 1000).toFixed(2)} t`
+      : `${landfillDivertedKg} kg`;
+
     // Practical direct kitchen preparation, steaming, boiling & sanitation water saved (~16 L/meal)
     const waterSavedLitres = Math.round(mealsRescued * IMPACT_PER_MEAL.waterLitres);
     const waterDisplay = `${waterSavedLitres.toLocaleString()} L`;
@@ -938,6 +944,8 @@ class Database {
       co2eAvoidedKg,
       co2Display,
       kmDrivenEquivalent,
+      landfillDivertedKg,
+      landfillDisplay,
       waterSavedLitres,
       waterDisplay,
       peopleFed,

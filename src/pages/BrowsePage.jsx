@@ -22,6 +22,7 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
   const [selectedDiningCategory, setSelectedDiningCategory] = useState('All');
   const [vegetarianOnly, setVegetarianOnly] = useState(false);
   const [jainOnly, setJainOnly] = useState(false);
+  const [underFiftyOnly, setUnderFiftyOnly] = useState(false);
   const [donationsOnly, setDonationsOnly] = useState(false);
   const [expiringOnly, setExpiringOnly] = useState(false);
   const [sortBy, setSortBy] = useState('distance'); // 'distance' | 'price-asc' | 'discount-desc' | 'urgency'
@@ -145,6 +146,11 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
           return false;
         }
 
+        // Budget meals under ₹50 filter
+        if (underFiftyOnly && rescue.rescuePrice > 50) {
+          return false;
+        }
+
         // 100% Free Langar / NGO Claim filter
         if (donationsOnly && rescue.rescuePrice !== 0 && !rescue.isDonation) {
           return false;
@@ -168,13 +174,14 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
         }
         return 0;
       });
-  }, [displayRescues, searchQuery, selectedDiningCategory, vegetarianOnly, jainOnly, donationsOnly, expiringOnly, sortBy]);
+  }, [displayRescues, searchQuery, selectedDiningCategory, vegetarianOnly, jainOnly, underFiftyOnly, donationsOnly, expiringOnly, sortBy]);
 
   const clearFilters = () => {
     setSearchQuery('');
     setSelectedDiningCategory('All');
     setVegetarianOnly(false);
     setJainOnly(false);
+    setUnderFiftyOnly(false);
     setDonationsOnly(false);
     setExpiringOnly(false);
     setSortBy('distance');
@@ -354,6 +361,19 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
           >
             <span>🕉️</span>
             <span>Jain Friendly (जैन भोजन)</span>
+          </button>
+
+          {/* Affordable Meals Under ₹50 */}
+          <button
+            onClick={() => setUnderFiftyOnly(!underFiftyOnly)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+              underFiftyOnly
+                ? 'bg-amber-100 text-amber-950 border-amber-400 shadow-xs'
+                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+            }`}
+          >
+            <span>🪙</span>
+            <span>Meals Under ₹50 (किफायती भोजन)</span>
           </button>
 
           {/* 100% Free Langar / NGO Seva */}

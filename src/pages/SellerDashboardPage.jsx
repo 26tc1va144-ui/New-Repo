@@ -495,7 +495,7 @@ export default function SellerDashboardPage({ onNavigate }) {
                   <input
                     type="number"
                     min="1"
-                    placeholder="e.g. 600"
+                    placeholder="e.g. 150"
                     required
                     value={formData.originalPrice}
                     onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
@@ -510,13 +510,58 @@ export default function SellerDashboardPage({ onNavigate }) {
                   <input
                     type="number"
                     min="0"
-                    placeholder="e.g. 149 (or 0 for donation)"
+                    placeholder="e.g. 35 (or 0 for donation)"
                     required
                     value={formData.rescuePrice}
                     onChange={(e) => setFormData({ ...formData, rescuePrice: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
                   />
                 </div>
+              </div>
+
+              {/* Surplus Affordability Guidance */}
+              <div className="bg-emerald-50/80 border border-emerald-200/90 rounded-2xl p-3 text-[11px] text-emerald-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                <div className="space-y-0.5">
+                  <span className="font-bold text-emerald-800">💡 Affordability Pricing Guide: </span>
+                  <span className="text-slate-600">
+                    {formData.category === 'Hostel' && 'Hostel batches are recommended at ₹20 – ₹35 to support student affordability.'}
+                    {formData.category === 'Mess' && 'Mess tiffins are recommended at ₹25 – ₹40 for affordable student living.'}
+                    {formData.category === 'Household' && 'Home surplus is best priced at ₹15 – ₹30 (or ₹0 for free community sharing).'}
+                    {formData.category === 'Catering' && 'Banquet surplus is recommended at ₹0 (Free donation for community & NGOs).'}
+                    {formData.category === 'Restaurant' && 'Recommended rescue price: ₹50 – ₹70 (~70-80% off retail) for fast clearance.'}
+                    {formData.category === 'Cafe' && 'Recommended rescue price: ₹30 – ₹45 (~70% off retail).'}
+                    {formData.category === 'Bakery' && 'Recommended rescue price: ₹40 – ₹55 for end-of-day batches.'}
+                    {formData.category === 'Groceries' && 'Recommended rescue price: ₹35 – ₹50 for fresh produce rescue.'}
+                    {formData.category === 'Community Kitchen' && 'Recommended: ₹0 (Free Langar Seva for relief).'}
+                    {formData.category === 'Cloud Kitchen' && 'Recommended: ₹40 – ₹60 for hot cooked surplus.'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    let suggested = 35;
+                    let original = 140;
+                    if (formData.category === 'Hostel') { suggested = 29; original = 120; }
+                    else if (formData.category === 'Mess') { suggested = 35; original = 140; }
+                    else if (formData.category === 'Household') { suggested = 25; original = 100; }
+                    else if (formData.category === 'Catering' || formData.category === 'Community Kitchen') { suggested = 0; original = 600; }
+                    else if (formData.category === 'Restaurant') { suggested = 69; original = 280; }
+                    else if (formData.category === 'Cafe') { suggested = 39; original = 150; }
+                    else if (formData.category === 'Bakery') { suggested = 49; original = 200; }
+                    else if (formData.category === 'Groceries') { suggested = 45; original = 220; }
+                    else if (formData.category === 'Cloud Kitchen') { suggested = 49; original = 180; }
+
+                    setFormData({
+                      ...formData,
+                      originalPrice: `${original}`,
+                      rescuePrice: `${suggested}`
+                    });
+                    addToast(`Set affordable surplus price: ₹${suggested} (${Math.round(((original - suggested)/original)*100)}% off)`, 'info');
+                  }}
+                  className="shrink-0 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-xs transition-colors"
+                >
+                  Apply recommended price
+                </button>
               </div>
 
               <div className="grid grid-cols-2 gap-3">

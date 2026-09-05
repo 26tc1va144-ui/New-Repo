@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function BrowsePage({ onNavigate, onSelectRescue }) {
-  const { dynamicRescues, rescues, simulatedLocation } = useApp();
+  const { dynamicRescues, rescues, simulatedLocation, loading } = useApp();
   const displayRescues = dynamicRescues || rescues;
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,7 +66,7 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
         }
         return 0;
       });
-  }, [rescues, searchQuery, selectedCategory, vegetarianOnly, donationsOnly, sortBy]);
+  }, [displayRescues, searchQuery, selectedCategory, vegetarianOnly, donationsOnly, sortBy]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -210,7 +210,18 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
       </div>
 
       {/* Food Listings Grid */}
-      {filteredRescues.length > 0 ? (
+      {loading && filteredRescues.length === 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map(n => (
+            <div key={n} className="bg-white rounded-3xl border border-slate-100 p-5 space-y-4 animate-pulse">
+              <div className="w-full h-48 bg-slate-200 rounded-2xl" />
+              <div className="h-4 bg-slate-200 rounded w-3/4" />
+              <div className="h-3 bg-slate-200 rounded w-1/2" />
+              <div className="h-8 bg-slate-200 rounded-xl" />
+            </div>
+          ))}
+        </div>
+      ) : filteredRescues.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRescues.map((rescue) => (
             <FoodCard

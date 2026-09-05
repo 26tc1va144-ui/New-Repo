@@ -10,7 +10,7 @@ import {
   CheckCircle2,
   Lock
 } from 'lucide-react';
-import { MOCK_SAFETY_FAQS } from '../data/mockData';
+import { SAFETY_FAQS } from '../data/safetyContent';
 
 export default function SafetyPage({ onNavigate }) {
   const [openFaq, setOpenFaq] = useState(0);

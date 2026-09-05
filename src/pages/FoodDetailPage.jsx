@@ -16,11 +16,38 @@ import {
 } from 'lucide-react';
 
 export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigate }) {
-  const { rescues, addToast } = useApp();
-  const rescue = rescues.find((r) => r.id === rescueId) || rescues[0];
+  const { rescues, dynamicRescues, loading, addToast } = useApp();
+  const allListings = dynamicRescues || rescues;
+  const rescue = allListings.find((r) => r.id === rescueId) || rescues.find((r) => r.id === rescueId);
 
   const [portions, setPortions] = useState(1);
-  const maxLimit = Math.min(rescue.limitPerBuyer || 3, rescue.portionsLeft);
+
+  if (!rescue) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-4">
+        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400">
+          <AlertCircle className="w-6 h-6" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 font-display">
+          {loading ? 'Loading surplus details...' : 'Listing Not Found'}
+        </h2>
+        <p className="text-sm text-slate-500">
+          This surplus listing may have expired, been claimed, or removed by the seller.
+        </p>
+        <button
+          onClick={onBack}
+          className="px-6 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
+        >
+          Return to Marketplace
+        </button>
+      </div>
+    );
+  }
+
+  const isSoldOut = rescue.portionsLeft <= 0 || rescue.status === 'Sold Out';
+  const isExpired = rescue.status === 'Expired';
+  const isAvailable = !isSoldOut && !isExpired && rescue.status !== 'Cancelled';
+  const maxLimit = Math.max(1, Math.min(rescue.limitPerBuyer || 3, rescue.portionsLeft));
 
   const handleShare = () => {
     navigator.clipboard?.writeText(window.location.href);
@@ -291,10 +318,10 @@ export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigat
 
               <button
                 onClick={() => onCheckout(rescue.id, portions)}
-                disabled={rescue.portionsLeft <= 0}
-                className="px-8 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm shadow-card hover:shadow-glow transition-all flex items-center gap-2"
+                disabled={!isAvailable}
+                className="px-8 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold text-sm shadow-card hover:shadow-glow transition-all flex items-center gap-2"
               >
-                <span>{isDonation ? 'Claim Bulk' : 'Reserve & pay'}</span>
+                <span>{isSoldOut ? 'Sold Out' : isExpired ? 'Expired' : isDonation ? 'Claim Bulk' : 'Reserve & pay'}</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

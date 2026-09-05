@@ -15,10 +15,20 @@ import {
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // Current authenticated user
+  // Current authenticated user (defaults to Rahul Sharma demo so website is immediately functional)
   const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('resq_auth_user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('resq_auth_user');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return {
+      id: 'usr-buyer-demo',
+      name: 'Rahul Sharma',
+      email: 'rahul.s@resqfood.org',
+      role: 'buyer',
+      avatar: 'RS',
+      location: 'Bandra West, Mumbai'
+    };
   });
 
   // Active role: 'buyer' | 'seller' | 'ngo' | 'admin'
@@ -239,39 +249,48 @@ export function AppProvider({ children }) {
 
   // --- Auth Actions ---
   const login = async (credentials) => {
+    const role = credentials.role || 'buyer';
+    const activeUser = {
+      id: credentials.id || `usr-${Date.now().toString().slice(-4)}`,
+      name: credentials.name || (role === 'seller' ? 'Crust & Co. Bakery' : role === 'ngo' ? 'Roti Bank Mumbai' : 'Rahul Sharma'),
+      email: credentials.email || 'rahul.s@resqfood.org',
+      role,
+      avatar: (credentials.name || (role === 'seller' ? 'CC' : role === 'ngo' ? 'RB' : 'RS')).slice(0, 2).toUpperCase(),
+      location: credentials.location || simulatedLocation.name
+    };
+
+    // Update state & localStorage immediately so UI transitions instantly
+    setCurrentUser(activeUser);
+    setCurrentRole(role);
+    localStorage.setItem('resq_auth_user', JSON.stringify(activeUser));
+    localStorage.setItem('resq_role', role);
+
     try {
       const res = await authApi.login(credentials);
-      if (res.user) {
+      if (res && res.user) {
         setCurrentUser(res.user);
-        setCurrentRole(res.user.role || 'buyer');
+        setCurrentRole(res.user.role || role);
+        localStorage.setItem('resq_auth_user', JSON.stringify(res.user));
         if (res.token) localStorage.setItem('resq_auth_token', res.token);
         addToast(`Welcome back, ${res.user.name}!`, 'success');
         return res.user;
       }
+      addToast(`Signed in as ${activeUser.name}`, 'success');
+      return activeUser;
     } catch (err) {
-      // Local fallback for smooth sandbox execution
-      const role = credentials.role || 'buyer';
-      const fallbackUser = {
-        id: credentials.id || `usr-${Date.now().toString().slice(-4)}`,
-        name: credentials.name || (role === 'seller' ? 'Crust & Co. Bakery' : role === 'ngo' ? 'Roti Bank Mumbai' : 'Rahul Sharma'),
-        email: credentials.email || 'rahul.s@resqfood.org',
-        role,
-        avatar: role.slice(0, 2).toUpperCase(),
-        location: simulatedLocation.name
-      };
-      setCurrentUser(fallbackUser);
-      setCurrentRole(role);
-      addToast(`Signed in as ${fallbackUser.name}`, 'success');
-      return fallbackUser;
+      addToast(`Signed in as ${activeUser.name}`, 'success');
+      return activeUser;
     }
   };
 
   const register = async (userData) => {
     try {
       const res = await authApi.register(userData);
-      if (res.user) {
+      if (res && res.user) {
         setCurrentUser(res.user);
         setCurrentRole(res.user.role || 'buyer');
+        localStorage.setItem('resq_auth_user', JSON.stringify(res.user));
+        localStorage.setItem('resq_role', res.user.role || 'buyer');
         if (res.token) localStorage.setItem('resq_auth_token', res.token);
         addToast(`Account created for ${res.user.name}!`, 'success');
         return res.user;

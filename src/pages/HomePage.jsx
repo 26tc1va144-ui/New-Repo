@@ -17,11 +17,15 @@ import {
 } from 'lucide-react';
 
 export default function HomePage({ onNavigate, onSelectRescue }) {
-  const { rescues, simulatedLocation } = useApp();
+  const { rescues, dynamicRescues, simulatedLocation } = useApp();
 
-  // Featured 3 rescues closest to user
-  const featuredRescues = rescues.slice(0, 3);
-  const closestDistance = rescues.length ? Math.min(...rescues.map(r => r.distance)) : 1.2;
+  // Featured rescues closest to user
+  const activeRescues = (dynamicRescues && dynamicRescues.length > 0) ? dynamicRescues : rescues;
+  const featuredRescues = activeRescues.slice(0, 3);
+  const distances = activeRescues
+    .map(r => r.distance)
+    .filter(d => typeof d === 'number' && !isNaN(d));
+  const closestDistance = distances.length ? Math.min(...distances).toFixed(1) : '1.2';
 
   const steps = [
     {

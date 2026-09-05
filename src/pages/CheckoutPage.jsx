@@ -22,8 +22,23 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
 
   const [portions, setPortions] = useState(initialPortions);
   const [paymentMethod, setPaymentMethod] = useState('upi'); // 'upi' | 'card' | 'store' | 'wallet'
-  const [selectedSlot, setSelectedSlot] = useState(rescue.pickupStart || '20:30');
+  const [selectedSlot, setSelectedSlot] = useState(rescue?.pickupStart || '20:30');
   const [isProcessing, setIsProcessing] = useState(false);
+
+  if (!rescue) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-4">
+        <div className="animate-spin w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full mx-auto" />
+        <h2 className="text-xl font-bold text-slate-900">Loading rescue details...</h2>
+        <button
+          onClick={onBack}
+          className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors"
+        >
+          Back to marketplace
+        </button>
+      </div>
+    );
+  }
 
   const isDonation = rescue.rescuePrice === 0 || rescue.isDonation;
   const menuPriceTotal = rescue.originalPrice * portions;
@@ -61,10 +76,10 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
     }
   ];
 
-  const handleProcessOrder = () => {
+  const handleProcessOrder = async () => {
     setIsProcessing(true);
 
-    setTimeout(() => {
+    try {
       // Trigger festive confetti
       confetti({
         particleCount: 80,
@@ -72,15 +87,17 @@ export default function CheckoutPage({ rescueId, initialPortions = 1, onBack, on
         origin: { y: 0.6 }
       });
 
-      const order = createOrder({
+      const order = await createOrder({
         rescue,
         portions,
         paymentMethod: paymentOptions.find(p => p.id === paymentMethod)?.name || 'UPI Sandbox'
       });
 
       setIsProcessing(false);
-      onCompleteOrder(order.id);
-    }, 1000);
+      onCompleteOrder(order?.id || 'order-new');
+    } catch (err) {
+      setIsProcessing(false);
+    }
   };
 
   return (

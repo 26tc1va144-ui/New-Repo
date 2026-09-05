@@ -58,44 +58,48 @@ export default function SellerDashboardPage({ onNavigate }) {
     }));
   };
 
-  const handleAddSubmit = (e) => {
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.originalPrice || !formData.rescuePrice) {
       addToast('Please fill in required fields (Title, Prices)', 'error');
       return;
     }
 
-    addRescueListing({
-      ...formData,
-      pickupWindow: `${formData.pickupStart} – ${formData.pickupEnd} today`
-    });
+    try {
+      await addRescueListing({
+        ...formData,
+        pickupWindow: `${formData.pickupStart} – ${formData.pickupEnd} today`
+      });
 
-    setShowAddModal(false);
-    // Reset form
-    setFormData({
-      title: '',
-      category: 'Bakery',
-      originalPrice: '',
-      rescuePrice: '',
-      portions: '6',
-      pickupStart: '20:30',
-      pickupEnd: '22:30',
-      freshnessCutoff: 'Consume within 24 hours',
-      holdTemperature: 'Stored in temperature-controlled cabinet',
-      description: '',
-      allergens: ['Gluten'],
-      image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80'
-    });
+      setShowAddModal(false);
+      // Reset form
+      setFormData({
+        title: '',
+        category: 'Bakery',
+        originalPrice: '',
+        rescuePrice: '',
+        portions: '6',
+        pickupStart: '20:30',
+        pickupEnd: '22:30',
+        freshnessCutoff: 'Consume within 24 hours',
+        holdTemperature: 'Stored in temperature-controlled cabinet',
+        description: '',
+        allergens: ['Gluten'],
+        image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80'
+      });
+    } catch (err) {
+      // Toast already handled in context
+    }
   };
 
-  const handleOtpVerify = (e) => {
+  const handleOtpVerify = async (e) => {
     e.preventDefault();
     if (!verifyOtpInput || verifyOtpInput.length < 4) {
       addToast('Please enter the 4-digit OTP', 'error');
       return;
     }
 
-    const res = verifyOrderOtp(verifyOtpInput);
+    const res = await verifyOrderOtp(verifyOtpInput);
     setOtpVerifyResult(res);
   };
 

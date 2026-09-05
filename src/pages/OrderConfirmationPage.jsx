@@ -36,9 +36,9 @@ export default function OrderConfirmationPage({ orderId, onNavigate }) {
     );
   }
 
-  const handleSimulatePickup = () => {
-    const result = verifyOrderOtp(order.otp);
-    if (result.success) {
+  const handleSimulatePickup = async () => {
+    const result = await verifyOrderOtp(order.otp);
+    if (result && result.success) {
       setSimulatedSuccess(true);
     }
   };

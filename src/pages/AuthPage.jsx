@@ -85,7 +85,7 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
   ];
 
   // Handle Form Submission (Sign In or Sign Up)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -104,14 +104,15 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
 
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      const user = login({
+    try {
+      await login({
         name: authMode === 'signup' ? name.trim() : (email.split('@')[0].replace('.', ' ').toUpperCase() || 'ResQ Member'),
         email: email.trim(),
         role: selectedRole,
         location: selectedLocation
       });
+
+      setLoading(false);
 
       // Redirect user to their corresponding role page
       if (selectedRole === 'seller') {
@@ -121,19 +122,26 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
       } else {
         onNavigate('/browse');
       }
-    }, 450);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message || 'Login failed. Please try again.');
+    }
   };
 
   // Instant 1-click persona demo login
-  const handleQuickLogin = (persona) => {
-    login({
-      id: `usr-${persona.role}-demo`,
-      name: persona.name,
-      email: persona.email,
-      role: persona.role,
-      location: persona.location,
-    });
-    onNavigate(persona.targetPath);
+  const handleQuickLogin = async (persona) => {
+    try {
+      await login({
+        id: `usr-${persona.role}-demo`,
+        name: persona.name,
+        email: persona.email,
+        role: persona.role,
+        location: persona.location,
+      });
+      onNavigate(persona.targetPath);
+    } catch (err) {
+      onNavigate(persona.targetPath);
+    }
   };
 
   return (

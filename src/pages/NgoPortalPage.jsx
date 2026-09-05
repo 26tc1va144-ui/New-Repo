@@ -32,12 +32,16 @@ export default function NgoPortalPage({ onNavigate }) {
   // Items escalated or nearing cut-off
   const unclaimedItems = rescues.filter(r => r.ngoEscalated || r.isExpiringSoon || r.rescuePrice === 0);
 
-  const handleClaimSubmit = (e) => {
+  const handleClaimSubmit = async (e) => {
     e.preventDefault();
     if (!selectedRescueForClaim) return;
 
-    claimUnclaimedByNgo(selectedRescueForClaim.id, selectedNgoName, vehicleNumber);
-    setSelectedRescueForClaim(null);
+    try {
+      await claimUnclaimedByNgo(selectedRescueForClaim.id, selectedNgoName, vehicleNumber);
+      setSelectedRescueForClaim(null);
+    } catch (err) {
+      // Handled in context toast
+    }
   };
 
   return (

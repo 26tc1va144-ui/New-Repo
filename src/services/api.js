@@ -51,6 +51,8 @@ export const listingsApi = {
 
 export const ordersApi = {
   create: (orderData) => request('/orders', { method: 'POST', body: JSON.stringify(orderData) }),
+  createRazorpayOrder: (data) => request('/orders/razorpay/create-order', { method: 'POST', body: JSON.stringify(data) }),
+  verifyRazorpayPayment: (data) => request('/orders/razorpay/verify-payment', { method: 'POST', body: JSON.stringify(data) }),
   getById: (id) => request(`/orders/${id}`),
   getByBuyer: (buyerId) => request(`/orders/buyer/${buyerId}`),
   getBySeller: (sellerId) => request(`/orders/seller/${sellerId}`),

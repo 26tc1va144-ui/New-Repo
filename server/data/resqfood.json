@@ -95,7 +95,7 @@
       "rescuePrice": 69,
       "discountPercent": 77,
       "portionsTotal": 8,
-      "portionsLeft": 6,
+      "portionsLeft": 5,
       "limitPerBuyer": 3,
       "pickupWindow": "12:30 – 15:30 & 20:30 – 22:30 today",
       "pickupStart": "20:30",
@@ -118,7 +118,7 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.412Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T23:28:19.034Z"
     },
     {
       "id": "rq-in-02",
@@ -220,7 +220,7 @@
       "rescuePrice": 59,
       "discountPercent": 75,
       "portionsTotal": 8,
-      "portionsLeft": 5,
+      "portionsLeft": 4,
       "limitPerBuyer": 2,
       "pickupWindow": "19:30 – 22:30 today",
       "pickupStart": "19:30",
@@ -243,7 +243,7 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:51:21.749Z"
     },
     {
       "id": "rq-in-05",
@@ -306,14 +306,14 @@
       "rescuePrice": 49,
       "discountPercent": 69,
       "portionsTotal": 10,
-      "portionsLeft": 4,
+      "portionsLeft": 3,
       "limitPerBuyer": 3,
       "pickupWindow": "18:00 – 22:00 today",
       "pickupStart": "18:00",
       "pickupEnd": "22:00",
       "freshnessCutoff": "Best consumed within 2 hours of pickup",
       "holdTemperature": "Tawa simmered at > 65°C maintained continuously",
-      "status": "Available",
+      "status": "Low Stock",
       "isDonation": false,
       "category": "Restaurant",
       "diningType": "Chaat & Snacks",
@@ -330,7 +330,7 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:38:53.057Z"
+      "updatedAt": "2026-09-05T22:46:55.850Z"
     },
     {
       "id": "rq-in-07",
@@ -595,6 +595,78 @@
   ],
   "orders": [
     {
+      "id": "ord-899034",
+      "rescueId": "rq-in-01",
+      "title": "North Indian Deluxe Thali (Paneer Makhani & Dal Tadka)",
+      "foodItem": "North Indian Deluxe Thali (Paneer Makhani & Dal Tadka)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Spice Route Kitchen",
+      "seller": "Spice Route Kitchen",
+      "buyerId": "usr-buyer-demo",
+      "buyerName": "Ananya Deshmukh",
+      "portions": 1,
+      "totalAmount": 69,
+      "amountPaid": 69,
+      "savings": 231,
+      "otp": "3732",
+      "qrData": "RESQ-ord-899034-3732-SpiceRouteKitchen",
+      "pickupWindow": "12:30 – 15:30 & 20:30 – 22:30 today",
+      "pickupStart": "20:30",
+      "pickupEnd": "22:30",
+      "status": "Ready for Pickup",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Razorpay (Online UPI/Card)",
+      "razorpayOrderId": "order_demo_1788650889237",
+      "razorpayPaymentId": "pay_demo_987654",
+      "razorpaySignature": "sig_demo_1788650889237",
+      "address": "14th Road, Off Linking Road, Khar West, Mumbai 400052",
+      "pickupLocation": "14th Road, Off Linking Road, Khar West, Mumbai 400052",
+      "coordinates": {
+        "lat": 19.068,
+        "lng": 72.839
+      },
+      "image": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80",
+      "createdAt": "2026-09-05T23:28:19.034Z"
+    },
+    {
+      "id": "ord-681749",
+      "rescueId": "rq-in-04",
+      "title": "Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Dawat-e-Khaas Biryani",
+      "buyerId": "usr-226311",
+      "buyerName": "U633445",
+      "portions": 1,
+      "totalAmount": 59,
+      "savings": 181,
+      "otp": "7491",
+      "qrData": "RESQ-ord-681749-7491-Dawat-e-KhaasBiryani",
+      "pickupWindow": "19:30 – 22:30 today",
+      "status": "Ready for Pickup",
+      "paymentMethod": "UPI (GPay / PhonePe / Paytm / QR)",
+      "address": "Waterfield Road, Bandra West, Mumbai 400050",
+      "createdAt": "2026-09-05T22:51:21.749Z"
+    },
+    {
+      "id": "ord-415850",
+      "rescueId": "rq-in-06",
+      "title": "Mumbai Special Pav Bhaji with Extra Butter Pavs (4 Pavs)",
+      "sellerId": "usr-seller-demo",
+      "sellerName": "Shivaji Park Snacks & Chaat",
+      "buyerId": "usr-5545",
+      "buyerName": "U633445",
+      "portions": 1,
+      "totalAmount": 49,
+      "savings": 111,
+      "otp": "9043",
+      "qrData": "RESQ-ord-415850-9043-ShivajiParkSnacks&Chaat",
+      "pickupWindow": "18:00 – 22:00 today",
+      "status": "Ready for Pickup",
+      "paymentMethod": "UPI (GPay / PhonePe / Paytm / QR)",
+      "address": "Opposite Shivaji Park, Dadar West, Mumbai 400028",
+      "createdAt": "2026-09-05T22:46:55.851Z"
+    },
+    {
       "id": "ord-initial-demo",
       "rescueId": "rq-101",
       "title": "Artisan Sourdough & Croissant Box",
@@ -633,6 +705,72 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1788650899035-998",
+      "userId": "usr-seller-demo",
+      "title": "New Order: 1x North Indian Deluxe Thali (Paneer Makhani & Dal Tadka)",
+      "message": "Ananya Deshmukh reserved 1 portion(s). Buyer OTP: 3732.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T23:28:19.035Z"
+    },
+    {
+      "id": "notif-1788650899034-937",
+      "userId": "usr-buyer-demo",
+      "title": "Order Confirmed: North Indian Deluxe Thali (Paneer Makhani & Dal Tadka)",
+      "message": "Your pickup pass with OTP 3732 is ready. Pickup window: 12:30 – 15:30 & 20:30 – 22:30 today.",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-899034",
+      "createdAt": "2026-09-05T23:28:19.034Z"
+    },
+    {
+      "id": "notif-1788648681751-46",
+      "userId": "usr-seller-demo",
+      "title": "New Order: 1x Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "U633445 reserved 1 portion(s). Buyer OTP: 7491.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T22:51:21.751Z"
+    },
+    {
+      "id": "notif-1788648681749-176",
+      "userId": "usr-226311",
+      "title": "Order Confirmed: Hyderabadi Dum Veg Biryani Handi (with Mirchi Salan)",
+      "message": "Your pickup pass with OTP 7491 is ready. Pickup window: 19:30 – 22:30 today.",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-681749",
+      "createdAt": "2026-09-05T22:51:21.749Z"
+    },
+    {
+      "id": "notif-1788648415853-417",
+      "userId": "usr-seller-demo",
+      "title": "New Order: 1x Mumbai Special Pav Bhaji with Extra Butter Pavs (4 Pavs)",
+      "message": "U633445 reserved 1 portion(s). Buyer OTP: 9043.",
+      "time": "Just now",
+      "read": false,
+      "type": "seller",
+      "link": "/seller",
+      "createdAt": "2026-09-05T22:46:55.853Z"
+    },
+    {
+      "id": "notif-1788648415851-118",
+      "userId": "usr-5545",
+      "title": "Order Confirmed: Mumbai Special Pav Bhaji with Extra Butter Pavs (4 Pavs)",
+      "message": "Your pickup pass with OTP 9043 is ready. Pickup window: 18:00 – 22:00 today.",
+      "time": "Just now",
+      "read": false,
+      "type": "order",
+      "link": "/order-confirmation/ord-415850",
+      "createdAt": "2026-09-05T22:46:55.851Z"
+    },
     {
       "id": "notif-1",
       "userId": "usr-buyer-demo",

@@ -402,6 +402,39 @@ export function AppProvider({ children }) {
     }
   };
 
+  const createRazorpayOrder = async ({ rescueId, portions }) => {
+    try {
+      return await ordersApi.createRazorpayOrder({ rescueId, portions });
+    } catch (err) {
+      addToast(err.message || 'Failed to initialize Razorpay checkout', 'error');
+      throw err;
+    }
+  };
+
+  const verifyRazorpayPayment = async (verificationData) => {
+    try {
+      const res = await ordersApi.verifyRazorpayPayment({
+        ...verificationData,
+        buyerId: currentUser?.id || 'usr-buyer-demo',
+        buyerName: currentUser?.name || 'Rahul Sharma'
+      });
+
+      if (res.success && res.order) {
+        setOrders(prev => [res.order, ...prev.filter(o => o.id !== res.order.id)]);
+        if (res.updatedListing) {
+          const norm = normalizeListing(res.updatedListing);
+          setRescues(prev => prev.map(l => l.id === norm.id ? norm : l));
+        }
+        addToast(`Payment verified! Your pickup OTP is ${res.order.otp}`, 'success');
+        return res.order;
+      }
+      throw new Error(res.error || 'Payment signature verification failed');
+    } catch (err) {
+      addToast(err.message || 'Payment verification failed', 'error');
+      throw err;
+    }
+  };
+
   const verifyOrderOtp = async (inputOtp) => {
     try {
       const res = await ordersApi.verifyOtp(inputOtp, currentUser?.id || 'usr-seller-demo');
@@ -515,6 +548,8 @@ export function AppProvider({ children }) {
         // Orders & claims
         orders,
         createOrder,
+        createRazorpayOrder,
+        verifyRazorpayPayment,
         verifyOrderOtp,
         ngoClaims,
         claimUnclaimedByNgo,

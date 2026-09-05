@@ -575,7 +575,7 @@ class Database {
   }
 
   // --- Orders & Atomic Stock Reservation ---
-  createOrder({ rescueId, portions, buyerId, buyerName, paymentMethod }) {
+  createOrder({ rescueId, portions, buyerId, buyerName, paymentMethod, paymentStatus = 'Paid', razorpayOrderId = null, razorpayPaymentId = null, razorpaySignature = null }) {
     this.refreshListingStatuses();
     const listing = this.memoryData.listings.find(l => l.id === rescueId);
 
@@ -620,19 +620,31 @@ class Database {
       id: orderId,
       rescueId: listing.id,
       title: listing.title,
+      foodItem: listing.title,
       sellerId: listing.sellerId,
       sellerName: listing.sellerName,
+      seller: listing.sellerName,
       buyerId: buyerId || 'usr-buyer-demo',
       buyerName: buyerName || 'Rahul Sharma',
       portions: requestedPortions,
       totalAmount,
+      amountPaid: totalAmount,
       savings,
       otp,
       qrData: `RESQ-${orderId}-${otp}-${listing.sellerName.replace(/\s+/g, '')}`,
       pickupWindow: listing.pickupWindow,
+      pickupStart: listing.pickupStart,
+      pickupEnd: listing.pickupEnd,
       status: 'Ready for Pickup',
-      paymentMethod: paymentMethod || 'UPI Sandbox',
+      paymentStatus, // 'Paid' | 'Pending' | 'Failed'
+      paymentMethod: paymentMethod || 'Razorpay (Online)',
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature,
       address: listing.address,
+      pickupLocation: listing.address,
+      coordinates: listing.coordinates || { lat: 19.0596, lng: 72.8350 },
+      image: listing.image,
       createdAt: new Date().toISOString()
     };
 

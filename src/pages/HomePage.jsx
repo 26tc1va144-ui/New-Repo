@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import FoodCard from '../components/food/FoodCard';
+import MapView from '../components/map/MapView';
 import {
   Sparkles,
   MapPin,
@@ -194,6 +195,37 @@ export default function HomePage({ onNavigate, onSelectRescue }) {
             />
           ))}
         </div>
+      </section>
+
+      {/* Nearby Food Interactive Map Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>Nearby Food Radar</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
+              Explore surplus food on the live map
+            </h2>
+            <p className="text-slate-600 text-sm mt-1">
+              Tap any food marker to inspect portions, rescue price, pickup address, and directions.
+            </p>
+          </div>
+
+          <button
+            onClick={() => onNavigate('/map')}
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 hover:text-emerald-700 transition-colors"
+          >
+            <span>Full screen map</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <MapView
+          rescues={activeRescues}
+          onSelectRescue={onSelectRescue}
+        />
       </section>
 
       {/* Role Portals (Sellers, Buyers, NGOs) */}

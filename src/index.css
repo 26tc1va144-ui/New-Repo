@@ -55,3 +55,21 @@
 .animate-soft-pulse {
   animation: softPulse 2s ease-in-out infinite;
 }
+
+/* Leaflet map custom styles */
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 4px !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+.resq-pickup-pin, .resq-pin, .user-gps-pin {
+  background: transparent !important;
+  border: none !important;
+}

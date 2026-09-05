@@ -104,7 +104,7 @@ export default function SafetyPage({ onNavigate }) {
         </div>
 
         <div className="space-y-3">
-          {MOCK_SAFETY_FAQS.map((faq, idx) => (
+          {(SAFETY_FAQS || []).map((faq, idx) => (
             <div
               key={faq.q}
               className="bg-white rounded-2xl border border-slate-200 shadow-soft overflow-hidden transition-all"

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
+import ReviewsList from '../components/feedback/ReviewsList';
 import {
   ArrowLeft,
   Clock,
@@ -16,7 +17,7 @@ import {
 } from 'lucide-react';
 
 export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigate }) {
-  const { rescues, dynamicRescues, loading, addToast } = useApp();
+  const { rescues, dynamicRescues, feedbacks, simulatedLocation, loading, addToast } = useApp();
   const allListings = dynamicRescues || rescues;
   const rescue = allListings.find((r) => r.id === rescueId) || rescues.find((r) => r.id === rescueId);
 
@@ -57,6 +58,36 @@ export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigat
   const isDonation = rescue.rescuePrice === 0 || rescue.isDonation;
   const savingsPerPortion = rescue.originalPrice - rescue.rescuePrice;
   const totalSavings = savingsPerPortion * portions;
+
+  // Filter reviews for this listing and provider
+  const providerFeedbacks = useMemo(() => {
+    return (feedbacks || []).filter(
+      (f) => f.rescueId === rescue.id || f.sellerId === rescue.sellerId || f.sellerName === rescue.seller
+    );
+  }, [feedbacks, rescue.id, rescue.sellerId, rescue.seller]);
+
+  const ratingsBreakdown = useMemo(() => {
+    if (!providerFeedbacks || providerFeedbacks.length === 0) {
+      return { foodQuality: 4.9, pickupExperience: 4.8, valueForMoney: 4.9 };
+    }
+    const len = providerFeedbacks.length;
+    const food = providerFeedbacks.reduce((s, f) => s + (f.ratings?.foodQuality || 5), 0) / len;
+    const pickup = providerFeedbacks.reduce((s, f) => s + (f.ratings?.pickupExperience || 5), 0) / len;
+    const val = providerFeedbacks.reduce((s, f) => s + (f.ratings?.valueForMoney || 5), 0) / len;
+    return {
+      foodQuality: Number(food.toFixed(1)),
+      pickupExperience: Number(pickup.toFixed(1)),
+      valueForMoney: Number(val.toFixed(1))
+    };
+  }, [providerFeedbacks]);
+
+  const effectiveAverageRating = providerFeedbacks.length > 0
+    ? Number((providerFeedbacks.reduce((sum, f) => sum + (f.overallRating || 5), 0) / providerFeedbacks.length).toFixed(1))
+    : (rescue.rating || 4.8);
+
+  const effectiveTotalReviews = providerFeedbacks.length > 0
+    ? providerFeedbacks.length
+    : (rescue.reviewsCount || 142);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -339,6 +370,15 @@ export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigat
           </div>
         </div>
       </div>
+
+      {/* Verified Customer Feedback & Reviews for Provider */}
+      <ReviewsList
+        providerName={rescue.seller}
+        averageRating={effectiveAverageRating}
+        totalReviews={effectiveTotalReviews}
+        ratingsBreakdown={ratingsBreakdown}
+        reviews={providerFeedbacks}
+      />
     </div>
   );
 }

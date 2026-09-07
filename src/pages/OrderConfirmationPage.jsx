@@ -20,12 +20,15 @@ import {
   LocateFixed,
   Navigation
 } from 'lucide-react';
+import FeedbackForm from '../components/feedback/FeedbackForm';
 
 export default function OrderConfirmationPage({ orderId, onNavigate }) {
   const { orders, verifyOrderOtp, addToast } = useApp();
   const order = orders.find(o => o.id === orderId) || orders[0];
 
-  const [simulatedSuccess, setSimulatedSuccess] = useState(order?.status === 'Collected');
+  const [simulatedSuccess, setSimulatedSuccess] = useState(
+    order?.status === 'Collected' || order?.status === 'Picked Up' || order?.status === 'Completed'
+  );
   const [userLocation, setUserLocation] = useState(null);
   const [distanceKm, setDistanceKm] = useState(null);
   const [locationError, setLocationError] = useState(null);
@@ -200,6 +203,35 @@ export default function OrderConfirmationPage({ orderId, onNavigate }) {
           <span>Back to marketplace</span>
         </button>
       </div>
+
+      {/* Multi-Order Switcher Bar */}
+      {orders.length > 1 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span className="text-xs font-bold text-slate-400 whitespace-nowrap">Your Orders:</span>
+          {orders.map((o) => {
+            const isCurrent = o.id === order.id;
+            const isOrderCompleted = o.status === 'Completed' || o.status === 'Picked Up' || o.status === 'Collected';
+            return (
+              <button
+                key={o.id}
+                onClick={() => onNavigate(`/order-confirmation/${o.id}`)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                  isCurrent
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <span>#{o.id}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${
+                  isCurrent ? 'bg-emerald-700 text-white' : isOrderCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'
+                }`}>
+                  {isOrderCompleted ? '✓ Completed' : 'Pending Pickup'}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Main Digital Pass Card */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-card overflow-hidden">
@@ -433,6 +465,14 @@ export default function OrderConfirmationPage({ orderId, onNavigate }) {
               <span>Handover completed! Enjoy your fresh meal and thank you for reducing food waste.</span>
             </div>
           )}
+
+          {/* Feedback System for Completed Orders */}
+          <FeedbackForm
+            order={{
+              ...order,
+              status: simulatedSuccess ? 'Picked Up' : order.status
+            }}
+          />
 
           {/* Quick Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">

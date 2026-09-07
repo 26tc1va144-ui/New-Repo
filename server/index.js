@@ -35,6 +35,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

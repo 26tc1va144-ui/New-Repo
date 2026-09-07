@@ -345,6 +345,9 @@ class Database {
       console.error('Failed to initialize database, falling back to initial data:', err);
       this.memoryData = JSON.parse(JSON.stringify(INITIAL_DATABASE));
     }
+    if (!this.memoryData.feedbacks) {
+      this.memoryData.feedbacks = [];
+    }
     this.refreshListingStatuses();
   }
 
@@ -718,6 +721,211 @@ class Database {
 
     this.save();
     return { success: true, order };
+  }
+
+  // --- Customer Feedback & Reviews ---
+  getFeedbacks() {
+    return this.memoryData.feedbacks || [];
+  }
+
+  getFeedbackByOrderId(orderId) {
+    const feedbacks = this.memoryData.feedbacks || [];
+    return feedbacks.find(f => f.orderId === orderId) || null;
+  }
+
+  getFeedbacksBySeller(sellerId) {
+    const feedbacks = (this.memoryData.feedbacks || []).filter(f => f.sellerId === sellerId);
+    const seller = this.memoryData.users.find(u => u.id === sellerId);
+
+    if (feedbacks.length === 0) {
+      return {
+        sellerId,
+        averageRating: seller?.rating || 4.8,
+        totalReviews: seller?.reviewsCount || 0,
+        ratingsBreakdown: {
+          foodQuality: 4.9,
+          pickupExperience: 4.8,
+          valueForMoney: 4.9
+        },
+        reviews: []
+      };
+    }
+
+    const totalReviews = feedbacks.length;
+    const avgOverall = feedbacks.reduce((sum, f) => sum + (Number(f.overallRating) || 5), 0) / totalReviews;
+    const avgFood = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.foodQuality) || 5), 0) / totalReviews;
+    const avgPickup = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.pickupExperience) || 5), 0) / totalReviews;
+    const avgValue = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.valueForMoney) || 5), 0) / totalReviews;
+
+    return {
+      sellerId,
+      averageRating: Number(avgOverall.toFixed(1)),
+      totalReviews,
+      ratingsBreakdown: {
+        foodQuality: Number(avgFood.toFixed(1)),
+        pickupExperience: Number(avgPickup.toFixed(1)),
+        valueForMoney: Number(avgValue.toFixed(1))
+      },
+      reviews: feedbacks
+    };
+  }
+
+  getFeedbacksByListing(rescueId) {
+    const feedbacks = (this.memoryData.feedbacks || []).filter(f => f.rescueId === rescueId);
+    const listing = this.memoryData.listings.find(l => l.id === rescueId);
+
+    if (feedbacks.length === 0) {
+      return {
+        rescueId,
+        averageRating: listing?.rating || 4.8,
+        totalReviews: listing?.reviewsCount || 0,
+        ratingsBreakdown: {
+          foodQuality: 4.9,
+          pickupExperience: 4.8,
+          valueForMoney: 4.9
+        },
+        reviews: []
+      };
+    }
+
+    const totalReviews = feedbacks.length;
+    const avgOverall = feedbacks.reduce((sum, f) => sum + (Number(f.overallRating) || 5), 0) / totalReviews;
+    const avgFood = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.foodQuality) || 5), 0) / totalReviews;
+    const avgPickup = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.pickupExperience) || 5), 0) / totalReviews;
+    const avgValue = feedbacks.reduce((sum, f) => sum + (Number(f.ratings?.valueForMoney) || 5), 0) / totalReviews;
+
+    return {
+      rescueId,
+      averageRating: Number(avgOverall.toFixed(1)),
+      totalReviews,
+      ratingsBreakdown: {
+        foodQuality: Number(avgFood.toFixed(1)),
+        pickupExperience: Number(avgPickup.toFixed(1)),
+        valueForMoney: Number(avgValue.toFixed(1))
+      },
+      reviews: feedbacks
+    };
+  }
+
+  createFeedback({
+    orderId,
+    ratings,
+    comment = '',
+    userId,
+    userName,
+    userAvatar
+  }) {
+    if (!orderId) {
+      throw new Error('Order ID is required to submit feedback.');
+    }
+
+    if (!this.memoryData.feedbacks) {
+      this.memoryData.feedbacks = [];
+    }
+
+    // 1. Locate Order
+    const order = this.memoryData.orders.find(o => o.id === orderId);
+    if (!order) {
+      throw new Error('Order not found in records.');
+    }
+
+    // 2. Enforce: Users should only be able to submit feedback after an order has been completed/picked up.
+    const isCompleted = order.status === 'Completed' || order.status === 'Picked Up' || order.status === 'Collected';
+    if (!isCompleted) {
+      throw new Error('Feedback can only be submitted after the order has been completed and collected at pickup.');
+    }
+
+    // 3. Prevent duplicate feedback for the same order
+    const existingFeedback = this.memoryData.feedbacks.find(f => f.orderId === orderId);
+    if (existingFeedback || order.hasFeedback) {
+      throw new Error('Feedback has already been submitted for this order.');
+    }
+
+    // 4. Basic validation for empty/invalid submissions
+    if (!ratings || typeof ratings !== 'object') {
+      throw new Error('Rating specifications are required.');
+    }
+
+    const foodQuality = Math.min(5, Math.max(1, Math.round(Number(ratings.foodQuality) || 0)));
+    const pickupExperience = Math.min(5, Math.max(1, Math.round(Number(ratings.pickupExperience) || 0)));
+    const valueForMoney = Math.min(5, Math.max(1, Math.round(Number(ratings.valueForMoney) || 0)));
+
+    if (!foodQuality || !pickupExperience || !valueForMoney) {
+      throw new Error('Please provide a 1–5 star rating for Food Quality, Pickup Experience, and Value for Money.');
+    }
+
+    const overallRating = Number(((foodQuality + pickupExperience + valueForMoney) / 3).toFixed(1));
+
+    // 5. Associate feedback with User, Order, Food listing, and Food provider
+    const newFeedback = {
+      id: `fb-${Date.now().toString().slice(-6)}`,
+      orderId: order.id,
+      rescueId: order.rescueId,
+      foodTitle: order.title || order.foodItem || 'ResQ Food Package',
+      sellerId: order.sellerId || 'usr-seller-demo',
+      sellerName: order.sellerName || order.seller || 'Food Provider',
+      userId: userId || order.buyerId || 'usr-buyer-demo',
+      userName: userName || order.buyerName || 'Verified Rescuer',
+      userAvatar: userAvatar || (userName ? userName.slice(0, 2).toUpperCase() : 'VR'),
+      ratings: {
+        foodQuality,
+        pickupExperience,
+        valueForMoney
+      },
+      overallRating,
+      comment: typeof comment === 'string' ? comment.trim() : '',
+      createdAt: new Date().toISOString()
+    };
+
+    // Store in DB
+    this.memoryData.feedbacks.unshift(newFeedback);
+
+    // Mark order as reviewed
+    order.hasFeedback = true;
+    order.feedbackId = newFeedback.id;
+
+    // 6. Update Average Rating & Reviews Count for Provider & Listing
+    const sellerFeedbacks = this.memoryData.feedbacks.filter(f => f.sellerId === newFeedback.sellerId);
+    const avgSellerRating = Number(
+      (sellerFeedbacks.reduce((sum, f) => sum + f.overallRating, 0) / sellerFeedbacks.length).toFixed(1)
+    );
+
+    // Update seller user record
+    const sellerUser = this.memoryData.users.find(u => u.id === newFeedback.sellerId);
+    if (sellerUser) {
+      sellerUser.rating = avgSellerRating;
+      sellerUser.reviewsCount = (sellerUser.reviewsCount || 0) + 1;
+    }
+
+    // Update all listings for this seller or the specific listing
+    const listing = this.memoryData.listings.find(l => l.id === order.rescueId);
+    if (listing) {
+      const listingFeedbacks = this.memoryData.feedbacks.filter(f => f.rescueId === listing.id);
+      listing.rating = Number(
+        (listingFeedbacks.reduce((sum, f) => sum + f.overallRating, 0) / listingFeedbacks.length).toFixed(1)
+      );
+      listing.reviewsCount = (listing.reviewsCount || 0) + 1;
+    }
+
+    // Create notification for seller
+    this.createNotification({
+      userId: newFeedback.sellerId,
+      title: `⭐ New Review Received (${overallRating}★)`,
+      message: `${newFeedback.userName} rated "${newFeedback.foodTitle}": ${newFeedback.comment ? `"${newFeedback.comment.slice(0, 60)}..."` : `${overallRating} stars.`}`,
+      type: 'seller',
+      link: '/seller'
+    });
+
+    this.save();
+
+    return {
+      success: true,
+      feedback: newFeedback,
+      providerStats: {
+        averageRating: avgSellerRating,
+        totalReviews: sellerFeedbacks.length
+      }
+    };
   }
 
   // --- NGO Donations & Claims ---

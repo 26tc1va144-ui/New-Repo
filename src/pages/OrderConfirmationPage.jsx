@@ -49,7 +49,7 @@ export default function OrderConfirmationPage({ orderId, onNavigate }) {
     );
   }
 
-  const pickupCoords = order.coordinates || { lat: 19.0596, lng: 72.8295 };
+  const pickupCoords = order.coordinates || { lat: 26.2058, lng: 78.1950 };
 
   // Initialize Leaflet Map for Pickup Location
   useEffect(() => {

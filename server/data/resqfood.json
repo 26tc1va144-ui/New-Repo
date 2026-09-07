@@ -7,10 +7,10 @@
       "phone": "+91 98201 44321",
       "role": "buyer",
       "avatar": "RS",
-      "address": "Bandra West, Mumbai 400050",
+      "address": "City Center, Gwalior 474011",
       "coordinates": {
-        "lat": 19.0596,
-        "lng": 72.8295
+        "lat": 26.2058,
+        "lng": 78.195
       },
       "createdAt": "2026-08-15T10:00:00.000Z"
     },
@@ -22,27 +22,27 @@
       "role": "seller",
       "avatar": "CC",
       "sellerType": "Bakery",
-      "address": "Shop 4, Hill Road, Bandra West, Mumbai 400050",
+      "address": "City Center, Near High Court, Gwalior 474011",
       "coordinates": {
-        "lat": 19.0596,
-        "lng": 72.835
+        "lat": 26.2058,
+        "lng": 78.195
       },
       "fssaiLicense": "FSSAI #11521008000452",
-      "rating": 4.8,
-      "reviewsCount": 142,
+      "rating": 4.9,
+      "reviewsCount": 143,
       "createdAt": "2026-07-10T08:30:00.000Z"
     },
     {
       "id": "usr-ngo-demo",
-      "name": "Roti Bank Mumbai",
+      "name": "Gwalior Roti Bank & Relief Hub",
       "email": "dispatch@rotibank.org",
       "phone": "+91 98334 11220",
       "role": "ngo",
       "avatar": "RB",
-      "address": "Mumbai Central Relief Hub, Mumbai 400008",
+      "address": "Maharaj Bada, Lashkar, Gwalior 474001",
       "coordinates": {
-        "lat": 18.9696,
-        "lng": 72.8193
+        "lat": 26.2045,
+        "lng": 78.1582
       },
       "fleetCount": 8,
       "createdAt": "2026-06-01T09:00:00.000Z"
@@ -85,24 +85,24 @@
       "sellerType": "Restaurant",
       "rating": 4.8,
       "reviewsCount": 142,
-      "location": "Khar West, Mumbai",
-      "address": "14th Road, Off Linking Road, Khar West, Mumbai 400052",
+      "location": "City Center, Gwalior",
+      "address": "City Center, Near High Court, Gwalior 474011",
       "coordinates": {
-        "lat": 19.068,
-        "lng": 72.839
+        "lat": 26.2058,
+        "lng": 78.195
       },
       "originalPrice": 300,
       "rescuePrice": 69,
       "discountPercent": 77,
       "portionsTotal": 8,
-      "portionsLeft": 5,
+      "portionsLeft": 3,
       "limitPerBuyer": 3,
       "pickupWindow": "12:30 – 15:30 & 20:30 – 22:30 today",
       "pickupStart": "20:30",
       "pickupEnd": "22:30",
       "freshnessCutoff": "Best before 3 hours from pickup",
       "holdTemperature": "Stored in commercial steam warmers at > 65°C",
-      "status": "Available",
+      "status": "Low Stock",
       "isDonation": false,
       "category": "Restaurant",
       "diningType": "Thalis & Combos",
@@ -118,7 +118,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.412Z",
-      "updatedAt": "2026-09-05T23:28:19.034Z"
+      "updatedAt": "2026-09-06T04:04:39.813Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-02",
@@ -128,11 +130,11 @@
       "sellerType": "Hostel",
       "rating": 4.7,
       "reviewsCount": 88,
-      "location": "Bandra West, Mumbai",
-      "address": "Near Bandra Lake, Bandra West, Mumbai 400050",
+      "location": "Maharaj Bada, Gwalior",
+      "address": "Maharaj Bada, Lashkar, Gwalior 474001",
       "coordinates": {
-        "lat": 19.054,
-        "lng": 72.831
+        "lat": 26.2045,
+        "lng": 78.1582
       },
       "originalPrice": 120,
       "rescuePrice": 29,
@@ -159,7 +161,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:37:48.413Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-03",
@@ -169,11 +173,11 @@
       "sellerType": "Mess",
       "rating": 4.9,
       "reviewsCount": 164,
-      "location": "Santacruz West, Mumbai",
-      "address": "Tagore Road, Near Station, Santacruz West, Mumbai 400054",
+      "location": "Sarafa Bazaar, Gwalior",
+      "address": "Sarafa Bazaar, Near Daulat Ganj, Gwalior 474001",
       "coordinates": {
-        "lat": 19.081,
-        "lng": 72.837
+        "lat": 26.207,
+        "lng": 78.1595
       },
       "originalPrice": 140,
       "rescuePrice": 35,
@@ -186,7 +190,7 @@
       "pickupEnd": "15:30",
       "freshnessCutoff": "Consume within 4 hours",
       "holdTemperature": "Freshly prepared and packed in food-safe tiffin containers (> 60°C)",
-      "status": "Available",
+      "status": "Expired",
       "isDonation": false,
       "category": "Mess",
       "diningType": "Mess & Hostel",
@@ -200,7 +204,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-06T11:09:28.869Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-04",
@@ -208,26 +214,26 @@
       "sellerId": "usr-seller-demo",
       "sellerName": "Dawat-e-Khaas Biryani",
       "sellerType": "Restaurant",
-      "rating": 4.8,
-      "reviewsCount": 210,
-      "location": "Bandra West, Mumbai",
-      "address": "Waterfield Road, Bandra West, Mumbai 400050",
+      "rating": 5,
+      "reviewsCount": 211,
+      "location": "Thatipur, Gwalior",
+      "address": "Thatipur Main Road, Gwalior 474011",
       "coordinates": {
-        "lat": 19.057,
-        "lng": 72.832
+        "lat": 26.217,
+        "lng": 78.204
       },
       "originalPrice": 240,
       "rescuePrice": 59,
       "discountPercent": 75,
       "portionsTotal": 8,
-      "portionsLeft": 3,
+      "portionsLeft": 0,
       "limitPerBuyer": 2,
       "pickupWindow": "19:30 – 22:30 today",
       "pickupStart": "19:30",
       "pickupEnd": "22:30",
       "freshnessCutoff": "Best consumed hot within 3 hours",
       "holdTemperature": "Sealed handi kept on steam dum holding (> 65°C)",
-      "status": "Low Stock",
+      "status": "Sold Out",
       "isDonation": false,
       "category": "Restaurant",
       "diningType": "Biryani & Rice",
@@ -243,7 +249,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T23:39:15.456Z"
+      "updatedAt": "2026-09-06T11:11:50.853Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-05",
@@ -253,11 +261,11 @@
       "sellerType": "Cafe",
       "rating": 4.9,
       "reviewsCount": 320,
-      "location": "Bandra West, Mumbai",
-      "address": "Hill Road, Near Mehboob Studio, Bandra West, Mumbai 400050",
+      "location": "Padav, Gwalior",
+      "address": "Padav, Railway Station Road, Gwalior 474002",
       "coordinates": {
-        "lat": 19.0515,
-        "lng": 72.827
+        "lat": 26.2144,
+        "lng": 78.184
       },
       "originalPrice": 150,
       "rescuePrice": 35,
@@ -286,7 +294,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:37:48.413Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-06",
@@ -296,11 +306,11 @@
       "sellerType": "Restaurant",
       "rating": 4.7,
       "reviewsCount": 195,
-      "location": "Dadar, Mumbai",
-      "address": "Opposite Shivaji Park, Dadar West, Mumbai 400028",
+      "location": "Morar, Gwalior",
+      "address": "Sun Temple Road, Morar, Gwalior 474006",
       "coordinates": {
-        "lat": 19.026,
-        "lng": 72.838
+        "lat": 26.228,
+        "lng": 78.225
       },
       "originalPrice": 160,
       "rescuePrice": 49,
@@ -330,7 +340,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:46:55.850Z"
+      "updatedAt": "2026-09-05T22:46:55.850Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-07",
@@ -340,17 +352,17 @@
       "sellerType": "Restaurant",
       "rating": 4.9,
       "reviewsCount": 280,
-      "location": "Matunga / Khar, Mumbai",
-      "address": "Bhaudaji Road, Matunga East, Mumbai 400019",
+      "location": "IIITM Campus, Gwalior",
+      "address": "ABV-IIITM Campus, Morena Link Road, Gwalior 474015",
       "coordinates": {
-        "lat": 19.028,
-        "lng": 72.855
+        "lat": 26.248,
+        "lng": 78.173
       },
       "originalPrice": 150,
       "rescuePrice": 39,
       "discountPercent": 74,
       "portionsTotal": 10,
-      "portionsLeft": 6,
+      "portionsLeft": 5,
       "limitPerBuyer": 3,
       "pickupWindow": "08:00 – 11:30 & 16:30 – 19:30 today",
       "pickupStart": "16:30",
@@ -372,7 +384,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-06T04:01:25.946Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-08",
@@ -382,11 +396,11 @@
       "sellerType": "Household",
       "rating": 4.8,
       "reviewsCount": 74,
-      "location": "Bandra West, Mumbai",
-      "address": "Pali Village, Bandra West, Mumbai 400050",
+      "location": "Shinde Ki Chhawani, Gwalior",
+      "address": "Shinde Ki Chhawani, Lashkar, Gwalior 474001",
       "coordinates": {
-        "lat": 19.06,
-        "lng": 72.829
+        "lat": 26.209,
+        "lng": 78.164
       },
       "originalPrice": 120,
       "rescuePrice": 25,
@@ -416,7 +430,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T23:33:51.585Z"
+      "updatedAt": "2026-09-05T23:33:51.585Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-09",
@@ -426,11 +442,11 @@
       "sellerType": "Catering",
       "rating": 4.9,
       "reviewsCount": 156,
-      "location": "Santacruz West, Mumbai",
-      "address": "S.V. Road, Santacruz West, Mumbai 400054",
+      "location": "Deendayal Nagar, Gwalior",
+      "address": "Sector 2, DD Nagar, Gwalior 474020",
       "coordinates": {
-        "lat": 19.083,
-        "lng": 72.836
+        "lat": 26.242,
+        "lng": 78.21
       },
       "originalPrice": 800,
       "rescuePrice": 0,
@@ -460,7 +476,9 @@
       "fssaiVerified": true,
       "ngoEscalated": true,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:37:48.413Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-10",
@@ -470,11 +488,11 @@
       "sellerType": "Bakery",
       "rating": 4.9,
       "reviewsCount": 310,
-      "location": "Bandra West, Mumbai",
-      "address": "Turner Road, Bandra West, Mumbai 400050",
+      "location": "Fort Road, Gwalior",
+      "address": "Gwalior Fort Gate, Fort Road, Gwalior 474008",
       "coordinates": {
-        "lat": 19.058,
-        "lng": 72.833
+        "lat": 26.2313,
+        "lng": 78.1695
       },
       "originalPrice": 220,
       "rescuePrice": 55,
@@ -504,7 +522,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:37:48.413Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-11",
@@ -514,11 +534,11 @@
       "sellerType": "Groceries",
       "rating": 4.6,
       "reviewsCount": 82,
-      "location": "Andheri East, Mumbai",
-      "address": "Mahakali Caves Road, Andheri East, Mumbai 400093",
+      "location": "Jayendraganj, Gwalior",
+      "address": "Jayendraganj, Lashkar, Gwalior 474009",
       "coordinates": {
-        "lat": 19.119,
-        "lng": 72.846
+        "lat": 26.209,
+        "lng": 78.164
       },
       "originalPrice": 250,
       "rescuePrice": 45,
@@ -546,7 +566,9 @@
       "fssaiVerified": true,
       "ngoEscalated": false,
       "createdAt": "2026-09-05T22:37:48.413Z",
-      "updatedAt": "2026-09-05T22:37:48.413Z"
+      "updatedAt": "2026-09-05T22:37:48.413Z",
+      "city": "gwalior",
+      "cityName": "Gwalior"
     },
     {
       "id": "rq-in-12",
@@ -556,11 +578,11 @@
       "sellerType": "Bakery",
       "rating": 4.8,
       "reviewsCount": 142,
-      "location": "Bandra West, Mumbai",
-      "address": "Shop 4, Hill Road, Bandra West, Mumbai 400050",
+      "location": "Phoolbagh, Gwalior",
+      "address": "Phoolbagh Chowk, Lashkar, Gwalior 474002",
       "coordinates": {
-        "lat": 19.0596,
-        "lng": 72.835
+        "lat": 26.212,
+        "lng": 78.171
       },
       "originalPrice": 200,
       "rescuePrice": 49,

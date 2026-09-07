@@ -31,75 +31,86 @@ export function haversineDistance(lat1, lon1, lat2, lon2) {
 }
 
 /**
- * Mumbai neighbourhood registry with exact GPS coordinates.
- * These power the location picker in DemoNotice / BrowsePage.
+ * Gwalior neighbourhood registry with exact GPS coordinates.
+ * Powers the primary location picker in ResQFood.
  */
-export const MUMBAI_LOCATIONS = [
+export const GWALIOR_LOCATIONS = [
   {
-    id: 'bandra-west',
-    name: 'Bandra West',
-    label: 'Bandra West, Mumbai',
-    lat: 19.0596,
-    lng: 72.8295,
-    zone: 'Western Suburbs',
+    id: 'city-center',
+    name: 'City Center',
+    label: 'City Center, Gwalior',
+    lat: 26.2058,
+    lng: 78.1950,
+    zone: 'Central Gwalior',
   },
   {
-    id: 'khar-west',
-    name: 'Khar West',
-    label: 'Khar West, Mumbai',
-    lat: 19.0680,
-    lng: 72.8390,
-    zone: 'Western Suburbs',
+    id: 'maharaj-bada',
+    name: 'Maharaj Bada',
+    label: 'Maharaj Bada, Lashkar, Gwalior',
+    lat: 26.2045,
+    lng: 78.1582,
+    zone: 'Lashkar',
   },
   {
-    id: 'santacruz-west',
-    name: 'Santacruz West',
-    label: 'Santacruz West, Mumbai',
-    lat: 19.0820,
-    lng: 72.8360,
-    zone: 'Western Suburbs',
+    id: 'morar',
+    name: 'Morar',
+    label: 'Morar, Gwalior',
+    lat: 26.2280,
+    lng: 78.2250,
+    zone: 'East Gwalior',
   },
   {
-    id: 'andheri-east',
-    name: 'Andheri East',
-    label: 'Andheri East, Mumbai',
-    lat: 19.1197,
-    lng: 72.8464,
-    zone: 'Western Suburbs',
+    id: 'thatipur',
+    name: 'Thatipur',
+    label: 'Thatipur, Gwalior',
+    lat: 26.2170,
+    lng: 78.2040,
+    zone: 'Central Gwalior',
   },
   {
-    id: 'dadar-west',
-    name: 'Dadar West',
-    label: 'Dadar West, Mumbai',
-    lat: 19.0220,
-    lng: 72.8420,
-    zone: 'Central Mumbai',
+    id: 'padav',
+    name: 'Padav',
+    label: 'Padav, Railway Station Road, Gwalior',
+    lat: 26.2144,
+    lng: 78.1840,
+    zone: 'Station Area',
   },
   {
-    id: 'mahim',
-    name: 'Mahim',
-    label: 'Mahim, Mumbai',
-    lat: 19.0410,
-    lng: 72.8420,
-    zone: 'Central Mumbai',
+    id: 'fort-road',
+    name: 'Gwalior Fort Road',
+    label: 'Fort Road, Gwalior',
+    lat: 26.2313,
+    lng: 78.1695,
+    zone: 'Old Gwalior',
   },
   {
-    id: 'colaba',
-    name: 'Colaba',
-    label: 'Colaba, Mumbai',
-    lat: 18.9067,
-    lng: 72.8147,
-    zone: 'South Mumbai',
+    id: 'iiitm-campus',
+    name: 'IIITM Campus',
+    label: 'Morena Link Road, IIITM, Gwalior',
+    lat: 26.2480,
+    lng: 78.1730,
+    zone: 'University Zone',
   },
   {
-    id: 'worli',
-    name: 'Worli',
-    label: 'Worli, Mumbai',
-    lat: 19.0127,
-    lng: 72.8177,
-    zone: 'Central Mumbai',
+    id: 'dd-nagar',
+    name: 'Deendayal Nagar',
+    label: 'DD Nagar, Gwalior',
+    lat: 26.2420,
+    lng: 78.2100,
+    zone: 'North Gwalior',
+  },
+  {
+    id: 'jayendraganj',
+    name: 'Jayendraganj',
+    label: 'Jayendraganj, Lashkar, Gwalior',
+    lat: 26.2090,
+    lng: 78.1640,
+    zone: 'Lashkar',
   },
 ];
+
+// Aliased for seamless backward compatibility across existing components
+export const MUMBAI_LOCATIONS = GWALIOR_LOCATIONS;
 
 /**
  * Attach live-computed distance from a user location to each rescue listing.
@@ -333,16 +344,16 @@ export const INDIA_GEO_CONFIG = {
  * Major Indian metropolitan hubs and regions for quick map navigation
  */
 export const INDIAN_CITIES = [
+  { id: 'gwalior', name: 'Gwalior', state: 'Madhya Pradesh', lat: 26.2183, lng: 78.1828, zoom: 13, flag: '🏰', isPrimary: true },
   { id: 'all-india', name: 'All India', state: 'National', lat: 21.7679, lng: 78.8718, zoom: 5, flag: '🇮🇳' },
-  { id: 'mumbai', name: 'Mumbai', state: 'Maharashtra', lat: 19.0760, lng: 72.8777, zoom: 12, flag: '🌊' },
   { id: 'delhi', name: 'Delhi NCR', state: 'Delhi NCR', lat: 28.6139, lng: 77.2090, zoom: 12, flag: '🏛️' },
   { id: 'bengaluru', name: 'Bengaluru', state: 'Karnataka', lat: 12.9716, lng: 77.5946, zoom: 12, flag: '☕' },
+  { id: 'mumbai', name: 'Mumbai', state: 'Maharashtra', lat: 19.0760, lng: 72.8777, zoom: 12, flag: '🌊' },
+  { id: 'indore', name: 'Indore', state: 'Madhya Pradesh', lat: 22.7196, lng: 75.8577, zoom: 12, flag: '🍲' },
+  { id: 'bhopal', name: 'Bhopal', state: 'Madhya Pradesh', lat: 23.2599, lng: 77.4126, zoom: 12, flag: '🕌' },
   { id: 'hyderabad', name: 'Hyderabad', state: 'Telangana', lat: 17.3850, lng: 78.4867, zoom: 12, flag: '🍛' },
   { id: 'pune', name: 'Pune', state: 'Maharashtra', lat: 18.5204, lng: 73.8567, zoom: 12, flag: '🎓' },
   { id: 'kolkata', name: 'Kolkata', state: 'West Bengal', lat: 22.5726, lng: 88.3639, zoom: 12, flag: '🚖' },
-  { id: 'chennai', name: 'Chennai', state: 'Tamil Nadu', lat: 13.0827, lng: 80.2707, zoom: 12, flag: '🏖️' },
-  { id: 'ahmedabad', name: 'Ahmedabad', state: 'Gujarat', lat: 23.0225, lng: 72.5714, zoom: 12, flag: '🪁' },
   { id: 'jaipur', name: 'Jaipur', state: 'Rajasthan', lat: 26.9124, lng: 75.7873, zoom: 12, flag: '🏰' },
-  { id: 'lucknow', name: 'Lucknow', state: 'Uttar Pradesh', lat: 26.8467, lng: 80.9462, zoom: 12, flag: '👑' },
-  { id: 'chandigarh', name: 'Chandigarh', state: 'Punjab', lat: 30.7333, lng: 76.7794, zoom: 12, flag: '🌾' }
+  { id: 'lucknow', name: 'Lucknow', state: 'Uttar Pradesh', lat: 26.8467, lng: 80.9462, zoom: 12, flag: '👑' }
 ];

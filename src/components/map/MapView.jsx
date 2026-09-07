@@ -22,8 +22,136 @@ import {
   Navigation
 } from 'lucide-react';
 
-// Pan-India sample food rescues spanning major cities & regions
+// Pan-India sample food rescues with Gwalior as the primary focus
 const PAN_INDIA_SAMPLE_RESCUES = [
+  // Gwalior (Primary Hub)
+  {
+    id: 'rq-gwl-01',
+    title: 'Gwalior Special Bedai, Aloo Sabzi & Hot Jalebi Box',
+    seller: 'S.S. Kachori & Bahadura Sweets',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Restaurant',
+    portionsLeft: 8,
+    originalPrice: 160,
+    rescuePrice: 45,
+    pickupWindow: '18:30 – 21:00 today',
+    pickupStart: '18:30',
+    pickupEnd: '21:00',
+    address: 'Maharaj Bada, Near Victoria Market, Lashkar, Gwalior 474001',
+    coordinates: { lat: 26.2045, lng: 78.1582 },
+    isExpiringSoon: true,
+    description: 'Crispy urad dal stuffed bedai pooris with spicy hing aloo jhol sabzi and freshly fried hot jalebis.'
+  },
+  {
+    id: 'rq-gwl-02',
+    title: 'Morena Famous Gajak & Til Chikki Festive Box (500g)',
+    seller: 'Shri Morena Gajak Bhandar',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Bakery',
+    portionsLeft: 12,
+    originalPrice: 220,
+    rescuePrice: 65,
+    pickupWindow: '19:00 – 21:30 today',
+    pickupStart: '19:00',
+    pickupEnd: '21:30',
+    address: 'Sarafa Bazaar, Near Daulat Ganj, Gwalior 474001',
+    coordinates: { lat: 26.2070, lng: 78.1595 },
+    isExpiringSoon: false,
+    description: 'Authentic Chambal-recipe gud-til gajak rolls and crunchy peanut chikki sealed in fresh gift boxes.'
+  },
+  {
+    id: 'rq-gwl-03',
+    title: 'North Indian Shahi Thali & Dal Baati Combos',
+    seller: 'Kwality Restaurant - City Center',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Restaurant',
+    portionsLeft: 6,
+    originalPrice: 280,
+    rescuePrice: 75,
+    pickupWindow: '21:00 – 22:30 today',
+    pickupStart: '21:00',
+    pickupEnd: '22:30',
+    address: 'City Center, Near High Court Bench, Gwalior 474011',
+    coordinates: { lat: 26.2058, lng: 78.1950 },
+    isExpiringSoon: false,
+    description: 'Shahi Paneer, Dal Makhani, Jeera Pulao, 4 Butter Rotis and Gulab Jamun packed hot in executive containers.'
+  },
+  {
+    id: 'rq-gwl-04',
+    title: 'Student Hostel Dinner Surplus (Dal Fry, Sabzi & Rotis)',
+    seller: 'IIITM Campus Annapurna Mess',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Catering',
+    portionsLeft: 15,
+    originalPrice: 120,
+    rescuePrice: 35,
+    pickupWindow: '21:30 – 23:00 today',
+    pickupStart: '21:30',
+    pickupEnd: '23:00',
+    address: 'Morena Link Road, ABV-IIITM Campus, Gwalior 474015',
+    coordinates: { lat: 26.2480, lng: 78.1730 },
+    isExpiringSoon: true,
+    description: 'Nutritious dinner meal with Dal Tadka, Aloo Matar, Jeera Rice, 5 Phulkas and Green Salad from student dining.'
+  },
+  {
+    id: 'rq-gwl-05',
+    title: 'Paneer Butter Masala & Garlic Naan Pack',
+    seller: 'Spice Route Kitchen - Gwalior',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Restaurant',
+    portionsLeft: 5,
+    originalPrice: 320,
+    rescuePrice: 80,
+    pickupWindow: '20:30 – 22:30 today',
+    pickupStart: '20:30',
+    pickupEnd: '22:30',
+    address: 'Shinde Ki Chhawani, Lashkar, Gwalior 474001',
+    coordinates: { lat: 26.2090, lng: 78.1640 },
+    isExpiringSoon: false,
+    description: 'Cottage cheese cubes tossed in butter makhani gravy, paired with 2 tandoori butter garlic naans.'
+  },
+  {
+    id: 'rq-gwl-06',
+    title: 'Pav Bhaji with Extra Butter Pavs (4 Pavs)',
+    seller: 'Station Chhappan Bhog',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Restaurant',
+    portionsLeft: 7,
+    originalPrice: 150,
+    rescuePrice: 40,
+    pickupWindow: '19:30 – 22:00 today',
+    pickupStart: '19:30',
+    pickupEnd: '22:00',
+    address: 'Padav, Railway Station Road, Gwalior 474002',
+    coordinates: { lat: 26.2144, lng: 78.1840 },
+    isExpiringSoon: false,
+    description: 'Mashed spiced vegetable bhaji with Amul butter, chopped onions, lemon wedges and toasted pavs.'
+  },
+  {
+    id: 'rq-gwl-07',
+    title: 'Fresh Malpua & Rabri Sweet Box (4 pieces)',
+    seller: 'Jodhpur Mishthan Bhandar',
+    city: 'gwalior',
+    cityName: 'Gwalior',
+    category: 'Bakery',
+    portionsLeft: 9,
+    originalPrice: 200,
+    rescuePrice: 55,
+    pickupWindow: '19:00 – 21:00 today',
+    pickupStart: '19:00',
+    pickupEnd: '21:00',
+    address: 'Thatipur Main Market, Gwalior 474011',
+    coordinates: { lat: 26.2170, lng: 78.2040 },
+    isExpiringSoon: true,
+    description: 'Cardamom flavored golden malpuas topped with thick saffron rabri and slivered pistachios.'
+  },
+
   // Mumbai
   {
     id: 'rq-mum-01',
@@ -42,24 +170,6 @@ const PAN_INDIA_SAMPLE_RESCUES = [
     coordinates: { lat: 19.0596, lng: 72.8295 },
     isExpiringSoon: true,
     description: 'Fresh surplus sourdough loaves and flaky butter croissants baked this morning.'
-  },
-  {
-    id: 'rq-mum-02',
-    title: 'North Indian Deluxe Thali (5 Meals)',
-    seller: 'Spice Route Kitchen',
-    city: 'mumbai',
-    cityName: 'Mumbai',
-    category: 'Restaurant',
-    portionsLeft: 6,
-    originalPrice: 300,
-    rescuePrice: 69,
-    pickupWindow: '21:00 – 22:30 today',
-    pickupStart: '21:00',
-    pickupEnd: '22:30',
-    address: '14th Road, Off Linking Road, Khar West, Mumbai 400052',
-    coordinates: { lat: 19.0680, lng: 72.8390 },
-    isExpiringSoon: false,
-    description: 'Paneer Makhani, Dal Tadka, Jeera Rice & 4 Tawa Phulkas prepared fresh for lunch/dinner.'
   },
 
   // Delhi NCR
@@ -252,7 +362,7 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
     return PAN_INDIA_SAMPLE_RESCUES;
   }, [rescues]);
 
-  const [selectedCityId, setSelectedCityId] = useState('all-india');
+  const [selectedCityId, setSelectedCityId] = useState('gwalior');
   const [activePinId, setActivePinId] = useState(selectedId || activeDataList[0]?.id);
   const [selectedRadius, setSelectedRadius] = useState('All'); // 'All' | 2 | 5 | 10 | 20
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -362,10 +472,11 @@ export default function MapView({ rescues = [], onSelectRescue, selectedId = nul
       mapInstanceRef.current = null;
     }
 
-    // Default: Centered on India overview
+    // Default: Centered on Gwalior (Primary Location)
+    const gwalior = INDIAN_CITIES.find(c => c.id === 'gwalior') || { lat: 26.2183, lng: 78.1828, zoom: 13 };
     const map = L.map(mapContainerRef.current, {
-      center: [INDIA_GEO_CONFIG.center.lat, INDIA_GEO_CONFIG.center.lng],
-      zoom: INDIA_GEO_CONFIG.zoom,
+      center: [gwalior.lat, gwalior.lng],
+      zoom: 13,
       minZoom: 4,
       zoomControl: false,
       attributionControl: false

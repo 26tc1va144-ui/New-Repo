@@ -50,7 +50,7 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
       return {
         badge: 'चाय-नाश्ता · Evening Snacks',
         title: 'Crispy Samosas, Pav Bhaji & Evening Chaat',
-        desc: 'Golden Punjabi Samosas, hot Jalebis and buttery Mumbai Pav Bhaji in hot holding now.',
+        desc: 'Golden Punjabi Samosas, hot Jalebis and buttery Gwalior Bedai & Pav Bhaji in hot holding now.',
         icon: '☕',
         targetCategory: 'Chaat & Snacks'
       };
@@ -202,7 +202,7 @@ export default function BrowsePage({ onNavigate, onSelectRescue }) {
           </h1>
           <div className="flex items-center gap-2 text-sm text-slate-500">
             <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-semibold text-slate-700">{simulatedLocation?.name || 'Bandra West, Mumbai'}</span>
+            <span className="font-semibold text-slate-700">{simulatedLocation?.name || 'City Center, Gwalior'}</span>
             <span className="text-slate-300">·</span>
             <span className="text-xs text-slate-500">
               Hot thalis, student mess tiffins, biryani & evening snacks

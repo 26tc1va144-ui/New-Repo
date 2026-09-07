@@ -53,7 +53,7 @@ export default function MapPage({ onNavigate, onSelectRescue }) {
               <MapPin className="w-4 h-4 text-emerald-600" />
               <span>Rescues in Radar ({rescues.length})</span>
             </h3>
-            <span className="text-[11px] text-slate-500 font-medium">Bandra Radius</span>
+            <span className="text-[11px] text-slate-500 font-medium">{simulatedLocation?.city || 'Gwalior'} Radar</span>
           </div>
 
           <div className="flex-1 overflow-y-auto space-y-3 pr-1">

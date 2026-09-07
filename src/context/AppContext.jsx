@@ -27,7 +27,7 @@ export function AppProvider({ children }) {
       email: 'rahul.s@resqfood.org',
       role: 'buyer',
       avatar: 'RS',
-      location: 'Bandra West, Mumbai'
+      location: 'City Center, Gwalior'
     };
   });
 
@@ -36,17 +36,18 @@ export function AppProvider({ children }) {
     return localStorage.getItem('resq_role') || 'buyer';
   });
 
-  // Simulated GPS Location
+  // Simulated GPS Location (Defaults to Gwalior)
   const [simulatedLocation, setSimulatedLocation] = useState({
-    name: 'Bandra West, Mumbai',
-    city: 'Mumbai',
-    lat: 19.0596,
-    lng: 72.8295,
+    name: 'City Center, Gwalior',
+    city: 'Gwalior',
+    lat: 26.2058,
+    lng: 78.1950,
   });
 
   // Live Database Collections
   const [rescues, setRescues] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [ngoClaims, setNgoClaims] = useState([]);
   const [sellerStats, setSellerStats] = useState(null);
@@ -456,8 +457,8 @@ export function AppProvider({ children }) {
       const res = await donationsApi.claim({
         rescueId,
         ngoId: currentUser?.id || 'usr-ngo-demo',
-        ngoName: ngoName || currentUser?.name || 'Roti Bank Mumbai',
-        vehicleId: vehicleId || 'MH-02-CD-4421'
+        ngoName: ngoName || currentUser?.name || 'Gwalior Roti Bank & Relief Trust',
+        vehicleId: vehicleId || 'MP-07-GA-1024'
       });
 
       const { claim, updatedListing } = res;
@@ -566,7 +567,7 @@ export function AppProvider({ children }) {
         // Analytics & Partners (Real-time dynamic calculations tied directly to live listings and orders)
         sellerStats: {
           storeName: sellerStats?.storeName || 'Crust & Co. Bakery',
-          outlet: sellerStats?.outlet || 'Bandra West Outlet',
+          outlet: sellerStats?.outlet || 'City Center Outlet, Gwalior',
           revenueChangeWoW: sellerStats?.revenueChangeWoW || '+18%',
           revenueRecovered7d: sellerStats?.revenueRecovered7d ?? (12450 + orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0)),
           portionsRescued7d: sellerStats?.portionsRescued7d ?? (184 + orders.reduce((sum, o) => sum + (o.portions || 0), 0)),
@@ -619,32 +620,32 @@ export function AppProvider({ children }) {
         ngos: [
           {
             id: 'ngo-1',
-            name: 'Roti Bank Mumbai',
-            location: 'Dadar West',
-            vehicles: 3,
-            volunteers: 14,
-            mealsServedToday: 540,
-            contactPhone: '+91 98200 11223',
+            name: 'Gwalior Roti Bank & Relief Trust',
+            location: 'Maharaj Bada, Gwalior',
+            vehicles: 4,
+            volunteers: 18,
+            mealsServedToday: 620,
+            contactPhone: '+91 94251 12345',
             status: 'Ready for dispatch'
           },
           {
             id: 'ngo-2',
-            name: 'Feeding Hands Trust',
-            location: 'Andheri East',
-            vehicles: 2,
-            volunteers: 6,
-            mealsServedToday: 320,
-            contactPhone: '+91 98331 44556',
-            status: '1 vehicle en route'
+            name: 'Robin Hood Army Gwalior Chapter',
+            location: 'Thatipur, Gwalior',
+            vehicles: 3,
+            volunteers: 24,
+            mealsServedToday: 480,
+            contactPhone: '+91 98262 54321',
+            status: '1 vehicle en route to Morar'
           },
           {
             id: 'ngo-3',
-            name: 'Anna Seva Foundation',
-            location: 'Bandra West',
-            vehicles: 4,
-            volunteers: 18,
-            mealsServedToday: 430,
-            contactPhone: '+91 98190 77889',
+            name: 'Apna Ghar Seva Sansthan Gwalior',
+            location: 'Padav, Gwalior',
+            vehicles: 2,
+            volunteers: 12,
+            mealsServedToday: 350,
+            contactPhone: '+91 94257 88990',
             status: 'Ready for dispatch'
           }
         ]

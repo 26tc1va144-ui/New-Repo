@@ -338,7 +338,7 @@ export default function ImpactPage({ onNavigate }) {
             Add your rescue to the total
           </h3>
           <p className="text-sm text-slate-600">
-            One rescued box a week keeps roughly 47 kg of food out of landfill every year. Browse what bakeries and kitchens near Bandra have listed right now.
+            One rescued box a week keeps roughly 47 kg of food out of landfill every year. Browse what bakeries and kitchens across Gwalior have listed right now.
           </p>
         </div>
 
@@ -391,7 +391,7 @@ export default function ImpactPage({ onNavigate }) {
             Recognized for personally rescuing <strong className="text-slate-900 font-bold">{userMealsRescued} surplus portions</strong>, preventing approx. <strong className="text-emerald-700">{userCo2Avoided} kg CO₂e emissions</strong> and conserving <strong className="text-blue-700">{userWaterSaved} L</strong> of water in {new Date().getFullYear()}.
           </p>
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-            <span>RESQ-CERT-{currentUser?.id ? currentUser.id.toUpperCase() : '2026'}-MUMBAI</span>
+            <span>RESQ-CERT-{currentUser?.id ? currentUser.id.toUpperCase() : '2026'}-GWALIOR</span>
             <span className="flex items-center gap-1 text-emerald-700 font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
               FSSAI Aligned

@@ -504,11 +504,11 @@ class Database {
       sellerType: data.sellerType || data.category || 'Bakery',
       rating: 4.9,
       reviewsCount: 1,
-      location: data.location || 'Bandra West, Mumbai',
-      address: data.address || 'Shop 4, Hill Road, Bandra West, Mumbai',
+      location: data.location || 'City Center, Gwalior',
+      address: data.address || 'Shop 4, City Center Road, Gwalior',
       coordinates: data.coordinates || {
-        lat: 19.0596 + (Math.random() - 0.5) * 0.02,
-        lng: 72.8350 + (Math.random() - 0.5) * 0.02
+        lat: 26.2058 + (Math.random() - 0.5) * 0.02,
+        lng: 78.1950 + (Math.random() - 0.5) * 0.02
       },
       originalPrice,
       rescuePrice,

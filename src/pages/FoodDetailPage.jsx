@@ -236,7 +236,7 @@ export default function FoodDetailPage({ rescueId, onBack, onCheckout, onNavigat
                 <div className="pt-2">
                   <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
                     <MapPin className="w-3.5 h-3.5" />
-                    Bandra West Zone · Simulated GPS
+                    {simulatedLocation?.name || 'City Center, Gwalior'} · Simulated GPS
                   </span>
                 </div>
               </div>

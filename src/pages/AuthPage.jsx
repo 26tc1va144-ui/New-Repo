@@ -30,7 +30,7 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState('buyer');
-  const [selectedLocation, setSelectedLocation] = useState('Bandra West, Mumbai');
+  const [selectedLocation, setSelectedLocation] = useState('City Center, Gwalior');
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -43,7 +43,7 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
       email: 'rahul.s@resqfood.org',
       roleLabel: 'Neighbour / Buyer',
       title: 'Neighbour',
-      location: 'Bandra West, Mumbai',
+      location: 'City Center, Gwalior',
       description: 'Explore live surplus listings up to 80% off, reserve boxes, and receive scannable QR pickup passes.',
       icon: Users,
       color: 'emerald',
@@ -58,7 +58,7 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
       email: 'manager@crustandco.com',
       roleLabel: 'Seller (Bakery & Café)',
       title: 'Food Business',
-      location: 'Hill Road, Bandra West',
+      location: 'City Center, Gwalior',
       description: 'Post freshly baked surplus batches before closing, verify buyer OTP codes, and recover revenue.',
       icon: Store,
       color: 'amber',
@@ -69,11 +69,11 @@ export default function AuthPage({ onNavigate, requiredNotice = false }) {
     },
     {
       role: 'ngo',
-      name: 'Roti Bank Mumbai',
+      name: 'Gwalior Roti Bank & Relief Trust',
       email: 'dispatch@rotibank.org',
       roleLabel: 'NGO Relief Coordinator',
       title: 'NGO Partner',
-      location: 'Mumbai Central Hub',
+      location: 'Maharaj Bada, Lashkar, Gwalior',
       description: 'Claim unclaimed surplus approaching cut-off, dispatch temperature-controlled vans, and log meals.',
       icon: HeartHandshake,
       color: 'rose',

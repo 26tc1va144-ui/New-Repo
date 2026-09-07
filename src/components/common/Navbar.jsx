@@ -74,7 +74,7 @@ export default function Navbar({ currentRoute, onNavigate }) {
 
   const getRoleLabel = () => {
     if (currentRole === 'seller') return 'Crust & Co. Bakery (Seller)';
-    if (currentRole === 'ngo') return 'Roti Bank Mumbai (NGO)';
+    if (currentRole === 'ngo') return 'Gwalior Roti Bank (NGO)';
     return 'Rahul S. (Neighbour)';
   };
 

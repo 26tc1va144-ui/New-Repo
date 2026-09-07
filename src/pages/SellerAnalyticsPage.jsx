@@ -43,7 +43,7 @@ export default function SellerAnalyticsPage({ onNavigate }) {
             Seller Analytics
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Crust & Co. Bakery · Bandra West Outlet (Last 7 Days)
+            Crust & Co. Bakery · City Center Outlet, Gwalior (Last 7 Days)
           </p>
         </div>
 
@@ -164,7 +164,7 @@ export default function SellerAnalyticsPage({ onNavigate }) {
               <Leaf className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold text-slate-900">Zero Landfill Milestone</span>
-                <p className="mt-0.5 text-slate-600">Your Bandra West outlet has maintained a 92% diversion rate for 4 consecutive weeks.</p>
+                <p className="mt-0.5 text-slate-600">Your City Center outlet has maintained a 92% diversion rate for 4 consecutive weeks.</p>
               </div>
             </div>
 
@@ -172,11 +172,79 @@ export default function SellerAnalyticsPage({ onNavigate }) {
               <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold text-slate-900">NGO Contribution Recognition</span>
-                <p className="mt-0.5 text-slate-600">6 bulk batches were seamlessly claimed by Roti Bank Mumbai and Anna Seva Foundation.</p>
+                <p className="mt-0.5 text-slate-600">6 bulk batches were seamlessly claimed by Gwalior Roti Bank & Relief Trust and Apna Ghar Seva Sansthan.</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Verified Customer Feedback Stream for Provider */}
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-4 text-left">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <h3 className="text-lg font-bold text-slate-900 font-display flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-emerald-600" />
+              <span>Customer Feedback & Verified Ratings ({sellerFeedbacks.length})</span>
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Live feedback from completed orders and counter pickups
+            </p>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-bold text-xs">
+            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+            <span>{avgRating.toFixed(1)} Provider Average</span>
+          </div>
+        </div>
+
+        {sellerFeedbacks.length === 0 ? (
+          <div className="p-6 text-center text-xs text-slate-400">
+            No feedback entries yet. Ratings will appear here once customers complete pickups.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {sellerFeedbacks.slice(0, 6).map((fb) => (
+              <div
+                key={fb.id}
+                className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2 text-xs"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
+                      {fb.userAvatar || (fb.userName ? fb.userName.slice(0, 2).toUpperCase() : 'VR')}
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-slate-900 block">{fb.userName}</span>
+                      <span className="text-[11px] text-slate-400 block">
+                        {fb.foodTitle || 'Surplus Meal'} · {new Date(fb.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-100/70 text-amber-900 font-bold text-xs">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span>{fb.overallRating?.toFixed(1) || '5.0'}</span>
+                  </div>
+                </div>
+
+                {fb.ratings && (
+                  <div className="flex items-center gap-2 text-[10px] text-slate-500">
+                    <span>Food: <strong>{fb.ratings.foodQuality}/5</strong></span>
+                    <span>·</span>
+                    <span>Pickup: <strong>{fb.ratings.pickupExperience}/5</strong></span>
+                    <span>·</span>
+                    <span>Value: <strong>{fb.ratings.valueForMoney}/5</strong></span>
+                  </div>
+                )}
+
+                {fb.comment && (
+                  <p className="text-slate-700 italic bg-white p-2.5 rounded-xl border border-slate-100">
+                    "{fb.comment}"
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

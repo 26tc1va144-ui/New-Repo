@@ -24,8 +24,8 @@ export default function NgoPortalPage({ onNavigate }) {
   } = useApp();
 
   const [selectedRescueForClaim, setSelectedRescueForClaim] = useState(null);
-  const [selectedNgoName, setSelectedNgoName] = useState('Roti Bank Mumbai');
-  const [vehicleNumber, setVehicleNumber] = useState('MH-02-CD-4421');
+  const [selectedNgoName, setSelectedNgoName] = useState('Gwalior Roti Bank & Relief Trust');
+  const [vehicleNumber, setVehicleNumber] = useState('MP-07-GA-1024');
   const [driverName, setDriverName] = useState('Suresh K.');
   const [notes, setNotes] = useState('Insulated temperature thermal boxes equipped');
 
@@ -98,7 +98,7 @@ export default function NgoPortalPage({ onNavigate }) {
             {totalVolunteersOnShift}
           </div>
           <div className="text-xs font-bold text-slate-700">Volunteers on shift</div>
-          <div className="text-[11px] text-slate-400">Active in Bandra & Western suburbs</div>
+          <div className="text-[11px] text-slate-400">Active in Gwalior & Chambal region</div>
         </div>
 
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-1">
@@ -305,9 +305,9 @@ export default function NgoPortalPage({ onNavigate }) {
                   onChange={(e) => setSelectedNgoName(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"
                 >
-                  <option value="Roti Bank Mumbai">Roti Bank Mumbai (Dadar Fleet)</option>
-                  <option value="Feeding Hands Trust">Feeding Hands Trust (Andheri Fleet)</option>
-                  <option value="Anna Seva Foundation">Anna Seva Foundation (Bandra Fleet)</option>
+                  <option value="Gwalior Roti Bank & Relief Trust">Gwalior Roti Bank (Maharaj Bada)</option>
+                  <option value="Robin Hood Army Gwalior">Robin Hood Army Gwalior (Thatipur & Morar)</option>
+                  <option value="Apna Ghar Seva Sansthan">Apna Ghar Seva Sansthan (Padav Fleet)</option>
                 </select>
               </div>
 

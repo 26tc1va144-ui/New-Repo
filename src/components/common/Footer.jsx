@@ -118,7 +118,7 @@ export default function Footer({ onNavigate }) {
             </h4>
             <div className="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700/60 text-xs text-slate-400 space-y-2">
               <p>
-                This MVP uses simulated location (Bandra West, Mumbai), demo payment sandbox and sample data for showcase purposes.
+                This MVP uses simulated location (City Center, Gwalior), demo payment sandbox and sample data for showcase purposes.
               </p>
               <div className="text-[11px] text-emerald-400/90 font-mono">
                 Environment: Production Sandbox

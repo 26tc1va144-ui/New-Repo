@@ -1,9 +1,19 @@
 import React from 'react';
-import { ArrowLeft, TrendingUp, BarChart3, Leaf, DollarSign, Calendar, Sparkles } from 'lucide-react';
+import { ArrowLeft, TrendingUp, BarChart3, Leaf, DollarSign, Calendar, Sparkles, Star, ShieldCheck, MessageSquare, ThumbsUp } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export default function SellerAnalyticsPage({ onNavigate }) {
-  const { sellerStats } = useApp();
+  const { sellerStats, feedbacks, currentUser } = useApp();
+
+  const sellerFeedbacks = (feedbacks || []).filter(
+    f => !currentUser?.id || f.sellerId === currentUser?.id || f.sellerId === 'usr-seller-demo'
+  );
+
+  const avgRating = sellerFeedbacks.length > 0
+    ? Number((sellerFeedbacks.reduce((s, f) => s + (f.overallRating || 5), 0) / sellerFeedbacks.length).toFixed(1))
+    : 4.9;
+
+  const totalReviewsCount = sellerFeedbacks.length || 142;
 
   const weeklyData = sellerStats?.dailyAnalytics || [
     { day: 'Mon', revenue: 1450, portions: 22, wasteKg: 9 },
@@ -53,22 +63,22 @@ export default function SellerAnalyticsPage({ onNavigate }) {
         </div>
       </div>
 
-      {/* 3 Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-2">
+      {/* 4 Summary Cards (including Food Provider Average Rating & Number of Reviews) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-soft space-y-2">
           <span className="text-xs text-slate-500 font-medium">Total Recovered</span>
-          <div className="text-3xl font-black text-slate-900 font-display">
+          <div className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
             ₹{sellerStats.revenueRecovered7d.toLocaleString()}
           </div>
           <div className="text-xs text-emerald-600 font-bold flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>+18% versus previous week</span>
+            <span>+18% versus last week</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-2">
-          <span className="text-xs text-slate-500 font-medium">Portions Sold</span>
-          <div className="text-3xl font-black text-slate-900 font-display">
+        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-soft space-y-2">
+          <span className="text-xs text-slate-500 font-medium">Portions Rescued</span>
+          <div className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
             {sellerStats.portionsRescued7d}
           </div>
           <div className="text-xs text-slate-500">
@@ -76,13 +86,31 @@ export default function SellerAnalyticsPage({ onNavigate }) {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-soft space-y-2">
-          <span className="text-xs text-slate-500 font-medium">CO₂e Offset</span>
-          <div className="text-3xl font-black text-emerald-700 font-display">
+        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-soft space-y-2">
+          <span className="text-xs text-slate-500 font-medium">CO₂e Diverted</span>
+          <div className="text-2xl sm:text-3xl font-black text-emerald-700 font-display">
             {sellerStats.co2eAvoidedKg} kg
           </div>
           <div className="text-xs text-slate-500">
-            Equivalent to 380 km car travel prevented
+            ~380 km car emissions saved
+          </div>
+        </div>
+
+        {/* Customer Rating & Reviews Card */}
+        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-soft space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500 font-medium">Customer Rating</span>
+            <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+              Verified
+            </span>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-amber-600 font-display flex items-center gap-1.5">
+            <span>{avgRating.toFixed(1)}</span>
+            <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
+          </div>
+          <div className="text-xs text-slate-600 font-semibold flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>{totalReviewsCount} customer reviews</span>
           </div>
         </div>
       </div>

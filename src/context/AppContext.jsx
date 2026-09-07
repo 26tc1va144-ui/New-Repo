@@ -5,7 +5,8 @@ import {
   ordersApi,
   donationsApi,
   notificationsApi,
-  analyticsApi
+  analyticsApi,
+  feedbacksApi
 } from '../services/api';
 import {
   enrichRescuesWithDynamicData,
@@ -136,9 +137,13 @@ export function AppProvider({ children }) {
         setNotifications(generalNotifs || []);
       }
 
-      // Fetch NGO claims & seller analytics
-      const claimsRes = await donationsApi.getByNgo('all').catch(() => []);
+      // Fetch NGO claims, seller analytics & feedbacks
+      const [claimsRes, feedbacksRes] = await Promise.all([
+        donationsApi.getByNgo('all').catch(() => []),
+        feedbacksApi.getAll().catch(() => [])
+      ]);
       setNgoClaims(claimsRes || []);
+      setFeedbacks(feedbacksRes || []);
 
       const defaultSellerStats = await analyticsApi.getSeller('usr-seller-demo').catch(() => null);
       if (defaultSellerStats) {
@@ -229,6 +234,26 @@ export function AppProvider({ children }) {
               const { notification } = data.payload;
               if (notification) {
                 setNotifications(prev => [notification, ...prev.filter(n => n.id !== notification.id)]);
+              }
+              break;
+            }
+            case 'FEEDBACK_SUBMITTED': {
+              const { feedback, providerStats } = data.payload;
+              if (feedback) {
+                setFeedbacks(prev => [feedback, ...prev.filter(f => f.id !== feedback.id)]);
+                setOrders(prev => prev.map(o => o.id === feedback.orderId ? { ...o, hasFeedback: true, feedbackId: feedback.id } : o));
+                if (providerStats) {
+                  setRescues(prev => prev.map(l => {
+                    if (l.sellerId === feedback.sellerId || l.id === feedback.rescueId) {
+                      return {
+                        ...l,
+                        rating: providerStats.averageRating,
+                        reviewsCount: providerStats.totalReviews
+                      };
+                    }
+                    return l;
+                  }));
+                }
               }
               break;
             }
@@ -478,6 +503,67 @@ export function AppProvider({ children }) {
     }
   };
 
+  // --- Customer Feedback Actions ---
+  const submitFeedback = async (feedbackData) => {
+    try {
+      const res = await feedbacksApi.submit(feedbackData);
+      if (res && res.success) {
+        setFeedbacks(prev => [res.feedback, ...prev.filter(f => f.id !== res.feedback.id)]);
+        // Mark order as reviewed
+        setOrders(prev => prev.map(o => o.id === feedbackData.orderId ? { ...o, hasFeedback: true, feedbackId: res.feedback.id } : o));
+        
+        // Update provider rating in rescues if returned
+        if (res.providerStats) {
+          setRescues(prev => prev.map(l => {
+            if (l.sellerId === res.feedback.sellerId || l.id === res.feedback.rescueId) {
+              return {
+                ...l,
+                rating: res.providerStats.averageRating,
+                reviewsCount: res.providerStats.totalReviews
+              };
+            }
+            return l;
+          }));
+        }
+
+        addToast('Thank you! Your verified feedback has been submitted.', 'success');
+        return res;
+      }
+      return res;
+    } catch (err) {
+      addToast(err.message || 'Could not submit feedback.', 'error');
+      throw err;
+    }
+  };
+
+  const getFeedbackByOrder = useCallback((orderId) => {
+    return feedbacks.find(f => f.orderId === orderId) || null;
+  }, [feedbacks]);
+
+  const getFeedbacksBySeller = useCallback((sellerId) => {
+    const sellerFeedbacks = feedbacks.filter(f => f.sellerId === sellerId);
+    return {
+      sellerId,
+      reviews: sellerFeedbacks,
+      totalReviews: sellerFeedbacks.length,
+      averageRating: sellerFeedbacks.length > 0
+        ? Number((sellerFeedbacks.reduce((sum, f) => sum + (f.overallRating || 5), 0) / sellerFeedbacks.length).toFixed(1))
+        : 4.8
+    };
+  }, [feedbacks]);
+
+  const getFeedbacksByListing = useCallback((rescueId) => {
+    const listingFeedbacks = feedbacks.filter(f => f.rescueId === rescueId);
+    return {
+      rescueId,
+      reviews: listingFeedbacks,
+      totalReviews: listingFeedbacks.length,
+      averageRating: listingFeedbacks.length > 0
+        ? Number((listingFeedbacks.reduce((sum, f) => sum + (f.overallRating || 5), 0) / listingFeedbacks.length).toFixed(1))
+        : 4.8
+    };
+  }, [feedbacks]);
+
   // --- Notification Actions ---
   const markNotificationAsRead = async (id) => {
     try {
@@ -554,6 +640,13 @@ export function AppProvider({ children }) {
         verifyOrderOtp,
         ngoClaims,
         claimUnclaimedByNgo,
+
+        // Customer Feedback & Reviews
+        feedbacks,
+        submitFeedback,
+        getFeedbackByOrder,
+        getFeedbacksBySeller,
+        getFeedbacksByListing,
 
         // Notifications & Toasts
         notifications,

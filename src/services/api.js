@@ -78,3 +78,11 @@ export const analyticsApi = {
   getAdmin: () => request('/analytics/admin'),
   resetDb: () => request('/analytics/reset', { method: 'POST' })
 };
+
+export const feedbacksApi = {
+  submit: (feedbackData) => request('/feedbacks', { method: 'POST', body: JSON.stringify(feedbackData) }),
+  getByOrder: (orderId) => request(`/feedbacks/order/${orderId}`),
+  getBySeller: (sellerId) => request(`/feedbacks/seller/${sellerId}`),
+  getByListing: (rescueId) => request(`/feedbacks/listing/${rescueId}`),
+  getAll: () => request('/feedbacks')
+};
